@@ -4,6 +4,7 @@ export type TypeRootStackParamList = {
 	Home: undefined
 	Front: undefined
 	Back: undefined
+	Menu: undefined
 }
 
 export interface IRoute {
