@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { FC, useEffect, useState } from 'react'
 import { TypeRootStackParamList } from './navigation.types'
 import { routes } from './routes'
-import ButtomMenu from '@/components/ui/layout/bottom-menu/BottomMenu'
+import ButtomMenu from '@/components/layout/bottom-menu/BottomMenu'
 
 const Stack = createNativeStackNavigator<TypeRootStackParamList>()
 

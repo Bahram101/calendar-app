@@ -7,13 +7,14 @@ module.exports = function (api) {
 		],
 		plugins: [
 			[
-				'babel-plugin-root-import', 
+				'babel-plugin-root-import',
 				{
 					rootPathSuffix: 'app/',
 					rootPathPrefix: '@/'
 				}
 			],
-			["nativewind/babel"],
+			['nativewind/babel'],
+			['inline-dotenv']
 		]
 	}
 }

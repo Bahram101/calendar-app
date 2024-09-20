@@ -11,8 +11,10 @@
   "dependencies": {
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/native-stack": "^6.11.0",
+    "@tanstack/react-query": "^5.56.2",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "axios": "^1.7.7",
+    "babel-plugin-inline-dotenv": "^1.7.0",
     "babel-plugin-root-import": "^6.6.0",
     "clsx": "^2.1.1",
     "expo": "~51.0.28",

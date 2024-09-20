@@ -1,3 +1,4 @@
+import Layout from '@/components/layout/Layout'
 import { TypeRootStackParamList } from '@/navigation/navigation.types'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
 import { FC } from 'react'
@@ -8,19 +9,10 @@ const Home: FC = () => {
   const { navigate } = useNavigation<NavigationProp<TypeRootStackParamList>>()
 
   return (
-    <View>
+    <Layout className=''>
       <Text>Home</Text>
-      <Pressable onPress={() => navigate('Front')}>
-        <Text>
-          Go to Front page
-        </Text>
-      </Pressable>
-      <Pressable onPress={() => navigate('Back')}>
-        <Text>
-          Go to Back page
-        </Text>
-      </Pressable>
-    </View>
+      <Text>bottom text</Text> 
+    </Layout>
   )
 }
 
