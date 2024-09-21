@@ -8,7 +8,7 @@ interface ILayout {
 
 const Layout: FC<PropsWithChildren<ILayout>> = ({ children, className }) => {
 	return (
-		<View className={cn('h-full w-full bg-white pt-mt-16', className)}>
+		<View className={cn('h-full w-full bg-red-300 px-3 mt-12', className)}>
 			<ScrollView showsVerticalScrollIndicator={false}>{children}</ScrollView>
 		</View>
 	)
