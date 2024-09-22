@@ -14,7 +14,6 @@ const Layout: FC<PropsWithChildren<ILayout>> = ({
 	return (
 		<View
 			className={cn('h-full w-full bg-white mt-[57px] pb-[55px]', className)}
-			style={{ opacity: 0.8 }}
 		>
 			<ScrollView
 				showsVerticalScrollIndicator={false}

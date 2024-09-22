@@ -1,5 +1,5 @@
-import { FC } from 'react'
-import { Text, View, useWindowDimensions } from 'react-native'
+import React, { FC, useMemo } from 'react'
+import { Dimensions, Text, View, useWindowDimensions } from 'react-native'
 import RenderHTML from 'react-native-render-html'
 import { SwiperFlatList } from 'react-native-swiper-flatlist'
 
@@ -7,19 +7,21 @@ import Layout from '@/components/layout/Layout'
 import { useData } from '@/components/screens/back-page/useData'
 import Loader from '@/components/ui/Loader'
 
+import { convertToHijriMonth, convertToMiladiMonth } from '@/utils/helpers'
+
 interface UseDataResponse {
 	data: any
 	isLoading?: boolean
 }
 
-const FrontPage: FC = () => {
+const FrontPage: FC = React.memo(() => {
 	const { data = null, isLoading = true } = useData(
 		'2024-09-20'
 	) as UseDataResponse
 
-	const { width } = useWindowDimensions()
-	// const { width } = Dimensions.get('window')
-	const colors = ['thistle', 'skyblue']
+	// const { width } = useWindowDimensions()
+	const { width } = Dimensions.get('window')
+
 	const slidesData = [
 		{
 			id: 4364,
@@ -33,57 +35,59 @@ const FrontPage: FC = () => {
 		{
 			id: 4365,
 			date: '2024-09-24',
-			history: '<p>Екінші объект туралы ақпарат</p>\n',
-			quote: '<p>Екінші хадис туралы ақпарат.</p>\n',
+			history:
+				'<p>Алматыда Қазақ Мемлекеттік өнер мұражайы ашылды (1935 ж).</p>\n',
+			quote: `<p>Кімде-кім үйінен шығарда «Аят-ул курсиді» оқыса, Аллаһу та'ала жетпіс періштеге бұйрық береді, ол адам үйіне қайтқанша оған дұға мен истиғфар оқиды.</p>
+         <p><strong>Хадис шәриф</strong></p>\n`,
 			hijri_date: '1446-03-21'
 		},
 		{
 			id: 4366,
 			date: '2024-09-25',
-			history: '<p>Үшінші объект туралы ақпарат</p>\n',
-			quote: '<p>Үшінші хадис туралы ақпарат.</p>\n',
+			history:
+				'<p>Алматыда Қазақ Мемлекеттік өнер мұражайы ашылды (1935 ж).</p>\n',
+			quote: `<p>Кімде-кім үйінен шығарда «Аят-ул курсиді» оқыса, Аллаһу та'ала жетпіс періштеге бұйрық береді, ол адам үйіне қайтқанша оған дұға мен истиғфар оқиды.</p>
+         <p><strong>Хадис шәриф</strong></p>\n`,
 			hijri_date: '1446-03-22'
 		}
 	]
+	// const htmlContent = data?.front || ''
 
-	const htmlContent = data?.back?.[0]?.content || ''
-
-	console.log('isLoading', isLoading)
-	console.log('wwwwwwwww', width)
+	// console.log('htmlContent', htmlContent)
 
 	return isLoading ? (
 		<Loader />
 	) : (
 		<Layout>
 			<SwiperFlatList
-				// autoplay
-				// autoplayDelay={3}
-				// autoplayLoop
-				// showPagination // Отображение пагинации (точки под слайдами)
-				data={slidesData} // Передаем данные в слайдер
+				data={slidesData}
 				renderItem={({ item }) => (
-					<View
-						style={[
-							{ width, padding: 20 },
-							{
-								justifyContent: 'center',
-								alignItems: 'center',
-								backgroundColor: '#f5f5f5'
-							}
-						]}
-					>
-						<Text
-							style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}
-						>
-							{item.date} (Хижри: {item.hijri_date})
+					<View className={`items-center pt-8 px-5`} style={[{ width }]}>
+						<Text className='text-xl font-bold uppercase selft-start'>
+							{convertToHijriMonth(item.hijri_date)}
 						</Text>
+
+						<Text className='font-bold mb-3 text-[180px] text-primary'>
+							{item.date.split('-')[2]}
+						</Text>
+
+						<Text className='text-2xl font-bold uppercase mb-5'>
+							{convertToMiladiMonth(item.date.split('-')[1])} /{' '}
+							{item.date.split('-')[0]}
+						</Text>
+
 						<RenderHTML contentWidth={width} source={{ html: item.history }} />
-						<RenderHTML contentWidth={width} source={{ html: item.quote }} />
+
+						<RenderHTML
+							contentWidth={width}
+							source={{ html: item.quote }}
+							// tagsStyles={{ p: { textAlign: 'center' } }}
+						/>
 					</View>
 				)}
 			/>
 		</Layout>
 	)
-}
+})
 
 export default FrontPage

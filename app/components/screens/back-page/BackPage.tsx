@@ -2,6 +2,7 @@ import { FC } from 'react'
 import { Text, View } from 'react-native'
 import { useData } from './useData'
 import Loader from '@/components/ui/Loader';
+import Layout from '@/components/layout/Layout';
 
 interface UseDataResponse {
    data: any;
@@ -16,9 +17,9 @@ const BackPage: FC = () => {
    console.log('data', data)
 
    return isLoading ? <Loader /> : (
-      <View>
+      <Layout>
          <Text>BackPage</Text>
-      </View>
+      </Layout>
    )
 }
 

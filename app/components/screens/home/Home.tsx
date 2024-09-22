@@ -39,22 +39,17 @@ const Home: FC = () => {
 		}
 	]
 
-	console.log('wwwwwwwww', width)
-
-	return (
+	return  (
 		<Layout>
 			<SwiperFlatList
-				// autoplay
-				// autoplayDelay={3}
-				// autoplayLoop
 				showPagination 
         paginationActiveColor="#2b6e7e"
-        paginationDefaultColor='#b5e4ef' //#90ddef
+        paginationDefaultColor='#b5e4ef'
         paginationStyleItem={{ width: 7, height: 7 }}
 				data={slidesData} 
 				renderItem={({ item }) => (
 					<View
-						className={`justify-center items-center p-10 bg-red-50`}
+						className={`justify-center items-center p-10`}
 						style={[{ width }]}
 					>
 						<Text className='text-bold mb-5 text-lg'>

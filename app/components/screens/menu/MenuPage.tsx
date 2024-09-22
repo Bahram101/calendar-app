@@ -1,11 +1,12 @@
+import Layout from '@/components/layout/Layout'
 import { FC } from 'react'
 import { Text, View } from 'react-native'
 
 const MenuPage: FC = () => {
  return (
-  <View>
+  <Layout>
      <Text>MenuPage</Text>
-  </View>
+  </Layout>
  )
 }
 
