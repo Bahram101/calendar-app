@@ -19,7 +19,10 @@ export default function App() {
 			<SafeAreaProvider>
 				<Navigation />
 			</SafeAreaProvider>
-			<StatusBar style='light' />
+			<StatusBar
+				backgroundColor='transparent'
+				// translucent={true}
+			/>
 			<Toast />
 		</QueryClientProvider>
 	)

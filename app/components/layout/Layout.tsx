@@ -7,10 +7,21 @@ interface ILayout {
 	className?: string
 }
 
-const Layout: FC<PropsWithChildren<ILayout>> = ({ children, className = '' }) => {
+const Layout: FC<PropsWithChildren<ILayout>> = ({
+	children,
+	className = ''
+}) => {
 	return (
-		<View className={cn('h-full w-full bg-white-300 px-3 mt-12 pb-[45px]', className)} style={{ opacity: 0.8 }}>
-			<ScrollView showsVerticalScrollIndicator={false}>{children}</ScrollView>
+		<View
+			className={cn('h-full w-full bg-white mt-[57px] pb-[55px]', className)}
+			style={{ opacity: 0.8 }}
+		>
+			<ScrollView
+				showsVerticalScrollIndicator={false}
+				contentContainerStyle={{ flexGrow: 1 }}
+			>
+				{children}
+			</ScrollView>
 		</View>
 	)
 }

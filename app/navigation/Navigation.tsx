@@ -21,13 +21,12 @@ const Navigation: FC = () => {
     }
   }, [])
 
-  console.log('currentRoute', currentRoute)
-  // console.log('navRef', navRef)
-
   return (
     <>
       <NavigationContainer ref={navRef}>
-        <Stack.Navigator screenOptions={{
+        <Stack.Navigator 
+          initialRouteName = "Front"
+          screenOptions={{
           headerShown: false,
           contentStyle: {
             backgroundColor: '#fff'
