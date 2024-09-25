@@ -67,11 +67,10 @@ const FrontPage: FC = () => {
 			const response = await fetch(`https://kuntizbe.kz/json/datas?date=${date}`);
 			const res = await response.json()
 			setDataList(prev => [...prev, res.front])
+			setIsLoading(false);
 		} catch (error) {
 			setIsLoading(false);
-		} finally {
-			setIsLoading(false);
-		}
+		}  
 	};
 
 	const getNextDate = (date: string): string => {
@@ -91,6 +90,7 @@ const FrontPage: FC = () => {
 	}, [dataList, isLoading]);
 
 	console.log('DATA_LIST', JSON.stringify(dataList, null, 2));
+	console.log('ISLOADING', isLoading);
 
 	return <Layout>
 		<SwiperFlatList
