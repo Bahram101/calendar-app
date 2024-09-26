@@ -4,6 +4,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 import Toast from 'react-native-toast-message'
 
 import Navigation from '@/navigation/Navigation'
+import DataProvider from '@/providers/DatatProvider'
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -16,12 +17,13 @@ const queryClient = new QueryClient({
 export default function App() {
 	return (
 		<QueryClientProvider client={queryClient}>
-			<SafeAreaProvider>
-				<Navigation />
-			</SafeAreaProvider>
+			<DataProvider>
+				<SafeAreaProvider>
+					<Navigation />
+				</SafeAreaProvider>
+			</DataProvider>
 			<StatusBar
 				backgroundColor='transparent'
-				// translucent={true}
 			/>
 			<Toast />
 		</QueryClientProvider>

@@ -38,3 +38,9 @@ export const convertToMiladiMonth = (month: string) => {
 	const monthName = miladiMonths[parseInt(month, 10) - 1]
 	return monthName;
 }
+
+export const getNextDate = (date: string): string => {
+	const currentDate = new Date(date)
+	currentDate.setDate(currentDate.getDate() + 1)
+	return currentDate.toISOString().split('T')[0].toString()
+}

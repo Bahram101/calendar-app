@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react'
+import React, { FC, useCallback, useEffect, useState } from 'react'
 import { Dimensions, Text, View } from 'react-native'
 import RenderHTML from 'react-native-render-html'
 import { SwiperFlatList } from 'react-native-swiper-flatlist'
@@ -6,6 +6,8 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist'
 import Layout from '@/components/layout/Layout'
 import { useData } from '@/components/screens/back-page/useData'
 import Loader from '@/components/ui/Loader'
+import { useAuth } from '@/components/hooks/useAuth'
+import { getNextDate } from '@/utils/helpers'
 
 
 // interface UseDataResponse {
@@ -17,49 +19,51 @@ const FrontPage: FC = () => {
 	const { width } = Dimensions.get('window')
 	const [activeIndex, setActiveIndex] = useState(1);
 	const [isLoading, setIsLoading] = useState(false);
-	const [dataList, setDataList] = useState([
-		{
-			id: 4364,
-			date: '2024-09-23',
-			history:
-				'<p>Алматыда Қазақ Мемлекеттік өнер мұражайы ашылды (1935 ж).</p>\n',
-			quote: `<p>Кімде-кім үйінен шығарда «Аят-ул курсиді» оқыса, Аллаһу та'ала жетпіс періштеге бұйрық береді, ол адам үйіне қайтқанша оған дұға мен истиғфар оқиды.</p>
-              <p><strong>Хадис шәриф</strong></p>\n`,
-			hijri_date: "20 Рабиул-әууәл 1446",
-			year_month: "Қыркүйек / 2024 жыл",
-			dayofweek: 'Дүйсенбі',
-			day: 23,
+	const { setDate } = useAuth()
+	const [dataList, setDataList] = useState([])
+	// const [dataList, setDataList] = useState([
+	// 	{
+	// 		id: 4364,
+	// 		date: '2024-09-23',
+	// 		history:
+	// 			'<p>Алматыда Қазақ Мемлекеттік өнер мұражайы ашылды (1935 ж).</p>\n',
+	// 		quote: `<p>Кімде-кім үйінен шығарда «Аят-ул курсиді» оқыса, Аллаһу та'ала жетпіс періштеге бұйрық береді, ол адам үйіне қайтқанша оған дұға мен истиғфар оқиды.</p>
+	//             <p><strong>Хадис шәриф</strong></p>\n`,
+	// 		hijri_date: "20 Рабиул-әууәл 1446",
+	// 		year_month: "Қыркүйек / 2024 жыл",
+	// 		dayofweek: 'Дүйсенбі',
+	// 		day: 23,
 
-		},
-		{
+	// 	},
+	// 	{
 
-			id: 4365,
-			date: '2024-09-24',
-			history:
-				'<p>Алматыда Қазақ Мемлекеттік өнер мұражайы ашылды (1935 ж).</p>\n',
-			quote: `<p>Кімде-кім үйінен шығарда «Аят-ул курсиді» оқыса, Аллаһу та'ала жетпіс періштеге бұйрық береді, ол адам үйіне қайтқанша оған дұға мен истиғфар оқиды.</p>
-         <p><strong>Хадис шәриф</strong></p>\n`,
-			hijri_date: "21 Рабиул-әууәл 1446",
-			year_month: "Қыркүйек / 2024 жыл",
-			dayofweek: 'Сейсенбі',
-			day: 24,
+	// 		id: 4365,
+	// 		date: '2024-09-24',
+	// 		history:
+	// 			'<p>Алматыда Қазақ Мемлекеттік өнер мұражайы ашылды (1935 ж).</p>\n',
+	// 		quote: `<p>Кімде-кім үйінен шығарда «Аят-ул курсиді» оқыса, Аллаһу та'ала жетпіс періштеге бұйрық береді, ол адам үйіне қайтқанша оған дұға мен истиғфар оқиды.</p>
+	//        <p><strong>Хадис шәриф</strong></p>\n`,
+	// 		hijri_date: "21 Рабиул-әууәл 1446",
+	// 		year_month: "Қыркүйек / 2024 жыл",
+	// 		dayofweek: 'Сейсенбі',
+	// 		day: 24,
 
-		},
-		{
+	// 	},
+	// 	{
 
-			id: 4366,
-			date: '2024-09-25',
-			history:
-				'<p>Алматыда Қазақ Мемлекеттік өнер мұражайы ашылды (1935 ж).</p>\n',
-			quote: `<p>Кімде-кім үйінен шығарда «Аят-ул курсиді» оқыса, Аллаһу та'ала жетпіс періштеге бұйрық береді, ол адам үйіне қайтқанша оған дұға мен истиғфар оқиды.</p>
-         <p><strong>Хадис шәриф</strong></p>\n`,
-			hijri_date: "22 Рабиул-әууәл 1446",
-			year_month: "Қыркүйек / 2024 жыл",
-			dayofweek: 'Сәрсенбі',
-			day: 25,
+	// 		id: 4366,
+	// 		date: '2024-09-25',
+	// 		history:
+	// 			'<p>Алматыда Қазақ Мемлекеттік өнер мұражайы ашылды (1935 ж).</p>\n',
+	// 		quote: `<p>Кімде-кім үйінен шығарда «Аят-ул курсиді» оқыса, Аллаһу та'ала жетпіс періштеге бұйрық береді, ол адам үйіне қайтқанша оған дұға мен истиғфар оқиды.</p>
+	//        <p><strong>Хадис шәриф</strong></p>\n`,
+	// 		hijri_date: "22 Рабиул-әууәл 1446",
+	// 		year_month: "Қыркүйек / 2024 жыл",
+	// 		dayofweek: 'Сәрсенбі',
+	// 		day: 25,
 
-		}
-	])
+	// 	}
+	// ])
 
 	const fetchData = async (date: string) => {
 		setIsLoading(true);
@@ -70,14 +74,17 @@ const FrontPage: FC = () => {
 			setIsLoading(false);
 		} catch (error) {
 			setIsLoading(false);
-		}  
+		}
 	};
 
-	const getNextDate = (date: string): string => {
-		const currentDate = new Date(date)
-		currentDate.setDate(currentDate.getDate() + 1)
-		return currentDate.toISOString().split('T')[0].toString()
-	}
+	useEffect(() => {
+		const date = new Date()
+		const previousDate = new Date(date.setDate(date.getDate() - 1)).toISOString().split('T')[0].toString()
+		const currentDate = date.toISOString().split('T')[0].toString()
+		const nextDate = new Date(date.setDate(date.getDate() + 1)).toISOString().split('T')[0].toString()
+		const days = [previousDate, currentDate, nextDate]
+		fetchData(currentDate)
+	}, [])
 
 	const handleChange = useCallback(({ index }: { index: number }) => {
 		setActiveIndex(index);
@@ -85,12 +92,14 @@ const FrontPage: FC = () => {
 		if (index === dataList.length - 1 && !isLoading) {
 			const lastItem = dataList[dataList.length - 1];
 			const nextDate = getNextDate(lastItem.date);
+
+			setDate(nextDate)
 			fetchData(nextDate);
 		}
 	}, [dataList, isLoading]);
 
 	console.log('DATA_LIST', JSON.stringify(dataList, null, 2));
-	console.log('ISLOADING', isLoading);
+
 
 	return <Layout>
 		<SwiperFlatList
@@ -119,7 +128,6 @@ const FrontPage: FC = () => {
 						{item.quote}
 					</Text>
 				</View>
-
 			}}
 		/>
 	</Layout>
