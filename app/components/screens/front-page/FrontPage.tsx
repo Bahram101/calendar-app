@@ -21,51 +21,10 @@ const FrontPage: FC = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const { setDate } = useAuth()
 	const [dataList, setDataList] = useState([])
-	// const [dataList, setDataList] = useState([
-	// 	{
-	// 		id: 4364,
-	// 		date: '2024-09-23',
-	// 		history:
-	// 			'<p>Алматыда Қазақ Мемлекеттік өнер мұражайы ашылды (1935 ж).</p>\n',
-	// 		quote: `<p>Кімде-кім үйінен шығарда «Аят-ул курсиді» оқыса, Аллаһу та'ала жетпіс періштеге бұйрық береді, ол адам үйіне қайтқанша оған дұға мен истиғфар оқиды.</p>
-	//             <p><strong>Хадис шәриф</strong></p>\n`,
-	// 		hijri_date: "20 Рабиул-әууәл 1446",
-	// 		year_month: "Қыркүйек / 2024 жыл",
-	// 		dayofweek: 'Дүйсенбі',
-	// 		day: 23,
+ 
 
-	// 	},
-	// 	{
-
-	// 		id: 4365,
-	// 		date: '2024-09-24',
-	// 		history:
-	// 			'<p>Алматыда Қазақ Мемлекеттік өнер мұражайы ашылды (1935 ж).</p>\n',
-	// 		quote: `<p>Кімде-кім үйінен шығарда «Аят-ул курсиді» оқыса, Аллаһу та'ала жетпіс періштеге бұйрық береді, ол адам үйіне қайтқанша оған дұға мен истиғфар оқиды.</p>
-	//        <p><strong>Хадис шәриф</strong></p>\n`,
-	// 		hijri_date: "21 Рабиул-әууәл 1446",
-	// 		year_month: "Қыркүйек / 2024 жыл",
-	// 		dayofweek: 'Сейсенбі',
-	// 		day: 24,
-
-	// 	},
-	// 	{
-
-	// 		id: 4366,
-	// 		date: '2024-09-25',
-	// 		history:
-	// 			'<p>Алматыда Қазақ Мемлекеттік өнер мұражайы ашылды (1935 ж).</p>\n',
-	// 		quote: `<p>Кімде-кім үйінен шығарда «Аят-ул курсиді» оқыса, Аллаһу та'ала жетпіс періштеге бұйрық береді, ол адам үйіне қайтқанша оған дұға мен истиғфар оқиды.</p>
-	//        <p><strong>Хадис шәриф</strong></p>\n`,
-	// 		hijri_date: "22 Рабиул-әууәл 1446",
-	// 		year_month: "Қыркүйек / 2024 жыл",
-	// 		dayofweek: 'Сәрсенбі',
-	// 		day: 25,
-
-	// 	}
-	// ])
-
-	const fetchData = async (date: string) => {
+	const fetchData = async (date: any) => {
+		if (dataList.some((item: any) => item.date === date)) return;
 		setIsLoading(true);
 		try {
 			const response = await fetch(`https://kuntizbe.kz/json/datas?date=${date}`);
@@ -78,12 +37,23 @@ const FrontPage: FC = () => {
 	};
 
 	useEffect(() => {
-		const date = new Date()
-		const previousDate = new Date(date.setDate(date.getDate() - 1)).toISOString().split('T')[0].toString()
-		const currentDate = date.toISOString().split('T')[0].toString()
-		const nextDate = new Date(date.setDate(date.getDate() + 1)).toISOString().split('T')[0].toString()
-		const days = [previousDate, currentDate, nextDate]
-		fetchData(currentDate)
+		const fetchDataInOrder = async () => {
+			let prev = new Date()
+			let today = new Date()
+			let next = new Date()
+
+			prev = new Date(prev.setDate(prev.getDate() - 1)).toISOString().split('T')[0].toString()
+			today = today.toISOString().split('T')[0].toString()
+			next = new Date(next.setDate(next.getDate() + 1)).toISOString().split('T')[0].toString()
+			const days = [prev, today, next]
+			console.log('DAYS', days)
+			setIsLoading(true);
+			for (const day of days) {
+				await fetchData(day);
+			}
+			setIsLoading(false);
+		}
+		fetchDataInOrder();
 	}, [])
 
 	const handleChange = useCallback(({ index }: { index: number }) => {
@@ -101,13 +71,13 @@ const FrontPage: FC = () => {
 	console.log('DATA_LIST', JSON.stringify(dataList, null, 2));
 
 
-	return <Layout>
+	return isLoading && dataList.length < 1 ? <Loader /> : (<Layout>
 		<SwiperFlatList
 			onChangeIndex={(data) => handleChange(data)}
 			data={dataList}
-			index={activeIndex}
+			index={dataList.length > 1 ? activeIndex : 0}
 			renderItem={({ item }) => {
-				return <View className={`items-center pt-8 px-5`} style={[{ width }]}>
+				return <View key={item.id} className={`items-center pt-8 px-5`} style={[{ width }]}>
 					<Text className='text-xl font-bold uppercase selft-start'>
 						{item.hijri_date}
 					</Text>
@@ -130,8 +100,9 @@ const FrontPage: FC = () => {
 				</View>
 			}}
 		/>
-	</Layout>
-
+	</Layout>)
 }
+
+
 
 export default FrontPage
