@@ -2,4 +2,4 @@ import { useContext } from 'react'
 
 import { DataContext } from '@/providers/DatatProvider'
 
-export const useAuth = () => useContext(DataContext)
+export const useDate = () => useContext(DataContext)

@@ -36,11 +36,27 @@ const miladiMonths = [
 
 export const convertToMiladiMonth = (month: string) => {
 	const monthName = miladiMonths[parseInt(month, 10) - 1]
-	return monthName;
+	return monthName
 }
 
-export const getNextDate = (date: string): string => {
+export const getNextDate = (date: string, ): string => {
 	const currentDate = new Date(date)
 	currentDate.setDate(currentDate.getDate() + 1)
 	return currentDate.toISOString().split('T')[0].toString()
+}
+
+export const getAdjacentDates = (currentDate: string) => {
+	const date = new Date(currentDate)
+
+	const prevDate = new Date(date)
+	prevDate.setDate(prevDate.getDate() - 1)
+
+	const nextDate = new Date(date)
+	nextDate.setDate(nextDate.getDate() + 1)
+
+	return [
+		prevDate?.toISOString()?.split('T')[0],
+		currentDate,
+		nextDate?.toISOString()?.split('T')[0]
+	]
 }

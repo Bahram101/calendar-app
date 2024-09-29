@@ -1,97 +1,103 @@
 import { FC, useCallback, useEffect, useState } from 'react'
 import { Dimensions, Text, View } from 'react-native'
+import SwiperFlatList from 'react-native-swiper-flatlist'
+import { jsx } from 'react/jsx-runtime'
+
+import { useDate } from '@/components/hooks/useDate'
+import Layout from '@/components/layout/Layout'
+import Loader from '@/components/ui/Loader'
+
+import { getAdjacentDates, getNextDate } from '@/utils/helpers'
+
 import { useData } from './useData'
-import Loader from '@/components/ui/Loader';
-import Layout from '@/components/layout/Layout';
-import { useAuth } from '@/components/hooks/useAuth';
-import SwiperFlatList from 'react-native-swiper-flatlist';
-import { getNextDate } from '@/utils/helpers';
 
 interface UseDataResponse {
-   data: any;
-   isLoading: boolean
+	data: any
+	isLoading: boolean
 }
 
 const BackPage: FC = () => {
+	const { width } = Dimensions.get('window')
+	const { date, setDate } = useDate()
+	const [activeIndex, setActiveIndex] = useState(1)
+	const [isLoading, setIsLoading] = useState(false)
+	const [dataList, setDataList] = useState([])
 
-   const { width } = Dimensions.get('window')
-   const { date, setDate } = useAuth()
-   const [activeIndex, setActiveIndex] = useState(1);
-   const [isLoading, setIsLoading] = useState(false);
-   const [dataList, setDataList] = useState([{
-      id: "5247",
-      title: "Әуезов жазған «Абай жолы»",
-      category: "Сіз білесіз бе?",
-      content: "<p>1. \"Абай жолы\" роман-эпопеясының алғашқы кітабы 1942 жылы жарық көрді.\n2. Жазушы Абайды өмірінде бір-ақ рет, бес жасында көрген.\n3. Мұхтар жазушы Абай бейнесін суреттегенде Достоевский мен Тургенев романдарын ескерген.\n4. Шығармада Құнанбай Базаралыны итжеккенге айдатса, шын өмірде Базаралыны Абай айдатқан.\n5. Әуезов романды үш кітап етіп жазып, \"Телғара\" деп атамақ болған.\n6. Жазушы Абайдың өлеңдерінің сырларын, толғаныстарын романда ашып көрсеткен.\n7. Жазушы кейбір оқиғаларды екі түрлі сарынмен жоспарлаған.\n8. Эпопеяда Дәркембай, Иса, Сейіт секілді ойдан шығарылған кейіпкерлер бар.\n9. Бұл кітаптар орыс тіліне аударылу барысында Мұхтар ағамыз тәржіма жұмысына өзі тікелей араласқан.\n10. Қодар мен Қамқа оқиғасы орын алғанда Абай өмірде болмаған немесе шақалақ сәби болған.\n11. Қодар мен Қамқаның арасындағы оқиға жала емес, шын болған.\n12.Абай туралы көптеген деректерді Кәкітай Ысқақұлы берген.\n13. \"Абай жолы\" эпопеясында 17 мыңнан астам сөз бар.\n14. Соңғы кітабын хатшыға айтып отырып тергізген.\n15. \"Абай жолы\" дүние жүзі әдебиетінің ең таңдаулы 200 томдығына енген.\n16. Қырғыздың ұлы жазушысы Шыңғыс Айтматов \"Абай жолын\" жанынан тастамай алып жүрген.\n17. Луи Арагон \"Абай жолына\" \"ХХ ғасырдың ең үздік шығармасы\" деп баға берген.\n18. «Абай жолы» кітабы 20 жыл жазылған.\n19. Эпопеяның мәтінін Мұхтар ағамыз түгелдей қолмен жазып, машинкаға бірнеше рет бастырған.\n20. КСРО кезіндегі қатаң цензура Абайды жақсы, Құнанбайды жаман етіп суреттеуді талап еткен. Артынан жазушы «Абай жолы» мүлдем жарыққа шықпай қалар деп, «Түсінетін халық аман болсын» деп келісім берген.</p>\n"
-   },
-   {
-      id: "5249",
-      title: "Малға достың мұңы жоқ, малдан басқа ",
-      category: "Өлең",
-      content: "<p>Малға достың мұңы жоқ, малдан басқа,</p>\n\n<p>Аларында шара жоқ, алдамасқа.</p>\n\n<p>Табысына табынып, қалтаң қағып,</p>\n\n<p>Тойғанынан қалғанын берсе алашқа.</p>\n\n<p>Мал жияды мақтанын білдірмекке,</p>\n\n<p>Көзге шұқып, малменен күйдірмекке.</p>\n\n<p>Өзі шошқа, өзгені ит деп ойлар,</p>\n\n<p>Сорпа-сумен, сүйекпен сүйдірмекке.</p>\n\n<p>Ақылды деп, арлы деп, ақпейіл деп</p>\n\n<p>Мақтамайды ешкімді бұл күнде көп.</p>\n\n<p>Осы күнде мал қайда, боқ ішінде,</p>\n\n<p>Алтын алсаң, береді боғынан жеп.</p>\n\n<p>Осыны оқып, ойлай бер, болсаң зерек.</p>\n\n<p>Еңбекті сат, ар сатып неге керек?</p>\n\n<p>Үш-ақ нәрсе – адамның қасиеті:</p>\n\n<p>Ыстық қайрат, нұрлы ақыл, жылы жүрек.</p>\n\n<p>Абай Құнанбайұлы</p>\n"
-   },
-   {
-      id: "5283",
-      title: "Кітапханалар тарихы (2)",
-      category: "Жалғасы",
-      content: "<p>Ислам әлемінде алғашқы кітапхана халифа хазреті Муауиа заманында құрылды. Аббасилер заманында көптеген ғалымның мыңдаған кітаптан тұратын кітапханалары бар еді. Кейіннен қолында кітабы жоқ адамның да оқи алуы үшін жалпыға (халыққа) арналған кітапханалар құрыла бастады. Алғашқы жалпыға арналған кітапхананы «Бәйтул-хикмә» (хикмет үйі) деген атпен Аббаси халифасы Харун Рашид ашқан. Мұнда әртүрлі тілде мыңдаған кітаптар жиналды. Уақыт өтуімен кітапхана қызметкерлері де көбейіп, кітапхананың сыйымдылығы да үлкейе берді. Аудармашылар, жазушылар және оқырмандар үшін бөлек-бөлек арнайы бөлмелер тағайындалды. Бұған қоса мешіттер мен медреселерге де тиесілі кітапханалар бар еді. Кардобадағы Әндулус Әмәуилер құрған 400 мың кітабы бар кітапхана әлемге әйгілі еді. Бұл кітапхана да, бұдан өзгелері сияқты алдымен Берберлер тарапынан, кейін Испандықтар тарапынан тоналып, өртеліп жойылды. Еуропаның қараңғылықтан оянуына, ренесанс (өркендеу дәуіріне) қадам басуына да осы Әмәуи мәдениетінің әсері мол болды. Сәлжуктер заманында тек Улу жами кітапханасының өзінде бір миллион қырық мың кітап бар еді. Османлылар заманында бұл дәстүр кеңінен етек жайды. Османлы дәуірінің алғаш кітапханасы Осман патша заманында Изникте (Никея), екіншісі Эдирнеде құрылған. Кейін келе ірі аймақтардың барлығында кітапхана мәдениеті дамып, кітаптар қоры көбейіп заманымызға дейін жетіп келді. Стамбул қаласында шыққан өрттің салдарынан кітапхананың зардап шегуінен кейін кітапханалар қалыңдығы бір метрлік дуалдармен, темір жақтаулы терезелермен ерекше сәулетте салына бастады. Кітапхана қызметкерлері өрт шыққан жағдайда терезелерді жауып кітаптардың зиян көруіне жол бермейтін. Бұл ғимараттар өртке ғана емес, зілзалаға қарсы да төзімді болды.</p>\n"
-   }])
+	const fetchData = async (date: string | null) => {
+		if (dataList.some((item: any) => item.date === date)) return
+		setIsLoading(true)
+		try {
+			const response = await fetch(
+				`https://kuntizbe.kz/json/datas?date=${date}`
+			)
+			const res = await response.json()
+			setDataList(prev => [...prev, res.back])
+			setIsLoading(false)
+		} catch (error) {
+			setIsLoading(false)
+		}
+	}
 
-   const fetchData = async (date: string | null) => {
-      setIsLoading(true);
-      try {
-         const response = await fetch(`https://kuntizbe.kz/json/datas?date=${date}`);
-         const res = await response.json()
-         setDataList(prev => [...prev, res.back])
-         setIsLoading(false);
-      } catch (error) {
-         setIsLoading(false);
-      }
-   };
+	useEffect(() => {
+		const dates = getAdjacentDates(date)
 
-   useEffect(() => {
-      fetchData(date)
-   }, [])
+		const fetchDateList = async () => {
+			for (const item of dates) {
+				await fetchData(item)
+			}
+			setDate(date)
+		}
+		fetchDateList()
+	}, [])
 
-   const handleChange = useCallback(({ index }: { index: number }) => {
-      setActiveIndex(index);
+	const handleChange = useCallback(
+		({ index }: { index: number }) => {
+			const activeItem = dataList[index]
+			console.log('activeItemBack', activeItem)
 
-      if (index === dataList.length - 1 && !isLoading) {
-         const lastItem = dataList[dataList.length - 1];
-         const nextDate = getNextDate(lastItem.date);
+			if (index === dataList.length - 1 && !isLoading) {
+				// const lastItem = dataList[dataList.length - 1]
+				// console.log('lastItem.date',lastItem.date)
+				const nextDate = getNextDate(date)
+				// setDate(activeItem.date)
+				fetchData(nextDate)
+			}
+		},
+		[dataList, isLoading, setDate, fetchData]
+	)
 
-         setDate(nextDate)
-         fetchData(nextDate);
-      }
-   }, [dataList, isLoading]);
+	console.log('DATA_LIST_BACK', JSON.stringify(dataList.flat(), null, 2))
+	console.log('DATE_BACK_CTX', date)
 
+	return isLoading && dataList.length < 3 ? (
+		<Loader />
+	) : (
+		<Layout>
+			<SwiperFlatList
+				onChangeIndex={data => handleChange(data)}
+				data={dataList.flat()}
+				index={dataList.length > 1 ? activeIndex : undefined}
+				renderItem={({ item }) => {
+					return (
+						<View
+							className={`items-center pt-8 px-5 bg-blue-50`}
+							style={[{ width }]}
+						>
+							<Text className='font-bold uppercase selft-start'>
+								{item?.category}
+							</Text>
 
-   console.log('DATA_LIST_BACK', JSON.stringify(dataList.flat(), null, 2));
+							<Text className='font-bold mb-3 uppercase text-primary'>
+								{item?.title}
+							</Text>
 
-
-   return <Layout>
-      <SwiperFlatList
-         onChangeIndex={(data) => handleChange(data)}
-         data={dataList.flat()}
-         index={activeIndex}
-         renderItem={({ item }) => {
-            return <View className={`items-center pt-8 px-5`} style={[{ width }]}>
-               <Text className='font-bold uppercase selft-start'>
-                  {item?.category}
-               </Text>
-
-               <Text className='font-bold mb-3 uppercase text-primary'>
-                  {item?.title}
-               </Text>
-
-               <Text className=' mb-5'>
-                  {item?.content}
-               </Text>
-            </View>
-         }}
-      />
-   </Layout>
-
+							<Text className=' mb-5'>{item?.content}</Text>
+						</View>
+					)
+				}}
+			/>
+		</Layout>
+	)
 }
 
 export default BackPage
