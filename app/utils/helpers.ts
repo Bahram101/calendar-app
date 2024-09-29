@@ -45,7 +45,10 @@ export const getNextDate = (date: string, ): string => {
 	return currentDate.toISOString().split('T')[0].toString()
 }
 
-export const getAdjacentDates = (currentDate: string) => {
+export const getAdjacentDates = (currentDate: string | null) => {
+	if (!currentDate) {
+    throw new Error("Invalid date");
+  }
 	const date = new Date(currentDate)
 
 	const prevDate = new Date(date)

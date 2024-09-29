@@ -15,7 +15,10 @@ const DataProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
 		const today = new Date()
 		const currentDate = today.toISOString().split('T')[0]
 		setDate(currentDate)
+		console.log('DataProvider2')
 	}, [])
+
+	console.log('DataProvider')
 
 	return (
 		<DataContext.Provider value={{ date, setDate }}>

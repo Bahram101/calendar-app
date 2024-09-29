@@ -5,7 +5,7 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist'
 
 import { useDate } from '@/components/hooks/useDate'
 import Layout from '@/components/layout/Layout'
-import { useData } from '@/components/screens/back-page/useData'
+import { useGetData } from '@/components/screens/back-page/useGetData'
 import Loader from '@/components/ui/Loader'
 
 import { getAdjacentDates, getNextDate } from '@/utils/helpers'
@@ -23,7 +23,7 @@ const FrontPage: FC = () => {
 	const [dataList, setDataList] = useState([])
 
 	const fetchData = async (date: any) => {
-		if (dataList.some((item: any) => item.date === date)) return
+		// if (dataList.some((item: any) => item.date === date)) return
 		setIsLoading(true)
 		try {
 			const response = await fetch(

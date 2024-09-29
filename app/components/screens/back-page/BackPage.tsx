@@ -9,7 +9,8 @@ import Loader from '@/components/ui/Loader'
 
 import { getAdjacentDates, getNextDate } from '@/utils/helpers'
 
-import { useData } from './useData'
+import { useGetData } from './useGetData'
+import { useFetchData } from '@/components/hooks/useFetchData'
 
 interface UseDataResponse {
 	data: any
@@ -20,35 +21,23 @@ const BackPage: FC = () => {
 	const { width } = Dimensions.get('window')
 	const { date, setDate } = useDate()
 	const [activeIndex, setActiveIndex] = useState(1)
-	const [isLoading, setIsLoading] = useState(false)
-	const [dataList, setDataList] = useState([])
+   const { dataList, isLoading, fetchData } = useFetchData();
+   // const {data, loading} = useGetData('2024-10-01')
+   
+   useEffect(() => {
+      const dates = getAdjacentDates(date);
+  
+      const fetchDateList = async () => {
+        for (const item of dates) {
+          await fetchData(item);
+        }
+        setDate(date);
+      };
+  
+      fetchDateList();
+    }, []);
 
-	const fetchData = async (date: string | null) => {
-		if (dataList.some((item: any) => item.date === date)) return
-		setIsLoading(true)
-		try {
-			const response = await fetch(
-				`https://kuntizbe.kz/json/datas?date=${date}`
-			)
-			const res = await response.json()
-			setDataList(prev => [...prev, res.back])
-			setIsLoading(false)
-		} catch (error) {
-			setIsLoading(false)
-		}
-	}
-
-	useEffect(() => {
-		const dates = getAdjacentDates(date)
-
-		const fetchDateList = async () => {
-			for (const item of dates) {
-				await fetchData(item)
-			}
-			setDate(date)
-		}
-		fetchDateList()
-	}, [])
+   // console.log('dataaaa',data)
 
 	const handleChange = useCallback(
 		({ index }: { index: number }) => {
