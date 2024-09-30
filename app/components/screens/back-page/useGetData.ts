@@ -6,8 +6,7 @@ export const useGetData = (date: string) => {
 	const { data, isLoading } = useQuery({
 		queryKey: ['get data'],
 		queryFn: () => DataService.getData(date),
-		select: data => {
-			console.log('ddddd', data)
+		select: (data:any) => {
 			return data.back
 		}
 	})

@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import { request } from '@/services/api/request.api'
+
 export const useFetchData = () => {
 	const [isLoading, setIsLoading] = useState(false)
 	const [dataList, setDataList] = useState<any[]>([])
@@ -7,12 +9,14 @@ export const useFetchData = () => {
 	const fetchData = async (date: string | null) => {
 		setIsLoading(true)
 		try {
-			const response = await fetch(
-				`https://kuntizbe.kz/json/datas?date=${date}`
-			)
-      
-			const res = await response.json()
-			setDataList(prev => [...prev, res.back])
+			const response = await request({
+				url: `/datas?date=${date}`,
+				method: 'GET'
+			})
+			setDataList(prev => [
+				...prev,
+				response
+			])
 			setIsLoading(false)
 		} catch (error) {
 			console.error('Ошибка при получении данных:', error)

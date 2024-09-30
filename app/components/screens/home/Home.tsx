@@ -6,7 +6,6 @@ import RenderHTML from 'react-native-render-html'
 import { SwiperFlatList } from 'react-native-swiper-flatlist'
 
 import Layout from '@/components/layout/Layout'
-import { useGetData } from '@/components/screens/back-page/useGetData'
 import Loader from '@/components/ui/Loader'
 
 import { TypeRootStackParamList } from '@/navigation/navigation.types'
