@@ -63,3 +63,9 @@ export const getAdjacentDates = (currentDate: string | null) => {
 		nextDate?.toISOString()?.split('T')[0]
 	]
 }
+
+export const getShiftedDate = (date: string, days: number): string => {
+	const currentDate = new Date(date);
+	currentDate.setDate(currentDate.getDate() + days); // Сдвигаем на количество дней
+	return currentDate.toISOString().split('T')[0].toString();
+};

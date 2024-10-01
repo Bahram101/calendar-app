@@ -7,12 +7,14 @@ import { useGetActiveSwiperDate } from '@/components/hooks/useGetActiveSwiperDat
 import Layout from '@/components/layout/Layout'
 import Loader from '@/components/ui/Loader'
 
-import { getAdjacentDates, getNextDate } from '@/utils/helpers'
+import { getAdjacentDates, getNextDate, getShiftedDate } from '@/utils/helpers'
 import { useFetchData } from '@/components/hooks/useFetchData'
 
 const FrontPage: FC = () => {
 	const { width } = Dimensions.get('window')
 	const [activeIndex, setActiveIndex] = useState(1)
+	const [prevIndex, setPrevIndex] = useState<number | null>(null);
+	const [isFirstSwipe, setIsFirstSwipe] = useState(true); // Для первого свайпа
 	const { date, setDate } = useGetActiveSwiperDate()
 	const { dataList, isLoading, fetchData } = useFetchData();
 
@@ -27,20 +29,64 @@ const FrontPage: FC = () => {
 		fetchDateList();
 	}, []);
 
+
 	const handleChange = useCallback(
 		({ index }: { index: number }) => {
-			const activeItem = dataList[index]
-			if (index === dataList.length - 1 && !isLoading) {
-				const lastItem = dataList[dataList.length - 1]
-				const nextDate = getNextDate(lastItem.front.date)
-				setDate(activeItem.front.date)
-				fetchData(nextDate)
+			// Логика для первого свайпа
+			if (prevIndex === null) {
+				// Сравниваем с начальным индексом
+				if (index > activeIndex) {
+					console.log('First swipe right'); // Первый свайп вправо
+					const lastItem = dataList[dataList.length - 1];
+					const nextDate = getShiftedDate(lastItem.front.date, 1);
+					console.log('nextDate1',nextDate)
+					setDate(dataList[index].front.date);
+					fetchData(nextDate);
+				} else if (index < activeIndex) {
+					console.log('First swipe left'); // Первый свайп влево
+					console.log('index', index); 
+					console.log('activeIndex', activeIndex);
+					const firstItem = dataList[0];
+					const previousDate = getShiftedDate(dataList[index].front.date, -1);
+					console.log('prevDate1', previousDate)
+					setDate(dataList[index].front.date);
+					fetchData(previousDate, 'left');
+				}
+				setPrevIndex(index); // Устанавливаем предыдущий индекс после первого свайпа
+			} else {
+				// Для последующих свайпов сравниваем с предыдущим индексом
+				if (index > prevIndex) {
+					console.log('Swiped right');
+					if (index === dataList.length - 1 && !isLoading) {
+						const lastItem = dataList[dataList.length - 1];
+						const nextDate = getShiftedDate(lastItem.front.date, 1);
+						setDate(dataList[index].front.date);
+						fetchData(nextDate);
+					}
+				} else if (index < prevIndex) {
+					console.log('Swiped left');
+					// console.log(' dataList[0]', dataList[0])
+					if (!isLoading) {
+						const lastItem = dataList[0];
+						const previousDate = getShiftedDate(dataList[index].front.date, -1);
+						console.log('prevDate2', previousDate)
+						setDate(dataList[index].front.date);
+						fetchData(previousDate, 'left');
+					} else {
+						console.log('ELSE')
+					}
+				}
+				setPrevIndex(index); // Обновляем предыдущий индекс
 			}
+
+			// Логика загрузки данных при достижении конца списка
+
 		},
-		[isLoading]
-	)
+		[isFirstSwipe, prevIndex, isLoading]
+	);
 
 	console.log('DATA_LIST', JSON.stringify(dataList, null, 2))
+
 
 
 	return isLoading && dataList.length < 3 ? (
