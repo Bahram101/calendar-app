@@ -7,7 +7,7 @@ import { useGetActiveSwiperDate } from '@/components/hooks/useGetActiveSwiperDat
 import Layout from '@/components/layout/Layout'
 import Loader from '@/components/ui/Loader'
 
-import { getAdjacentDates, getNextDate } from '@/utils/helpers'
+import { getAdjacentDates, getNextDate, getShiftedDate } from '@/utils/helpers'
 import { useFetchData } from '@/components/hooks/useFetchData'
 
 const BackPage: FC = () => {
@@ -20,7 +20,7 @@ const BackPage: FC = () => {
       const dates = getAdjacentDates(date);
       const fetchDateList = async () => {
          for (const item of dates) {
-            await fetchData(item,);
+            await fetchData(item);
          }
          setDate(date);
       };
@@ -29,12 +29,12 @@ const BackPage: FC = () => {
 
    const handleChange = useCallback(
       ({ index }: { index: number }) => {
-         const activeItem = dataList[index]
+
          if (index === dataList.length - 1 && !isLoading) {
-            const lastItem = dataList[dataList.length - 1]
-            const nextDate = getNextDate(lastItem.front.date)
-            setDate(activeItem.front.date)
-            fetchData(nextDate)
+            const currentActiveDate = dataList[index].front.date;
+            const nextDate = getShiftedDate(currentActiveDate, 1);
+            setDate(currentActiveDate);
+            fetchData(nextDate);
          }
       },
       [isLoading]
@@ -46,21 +46,23 @@ const BackPage: FC = () => {
    return isLoading && dataList.length < 3 ? (
       <Loader />
    ) : (
-      <Layout>
+      <Layout className='px-5'>
          <SwiperFlatList
             onChangeIndex={data => handleChange(data)}
             data={dataList}
             index={dataList.length > 1 ? activeIndex : undefined}
             renderItem={({ item }) => {
-               return item.back.map((backItem: any) => {
-                  return <View key={backItem.id} className={`items-center pt-8 px-5 bg-blue-50`} style={[{ width }]}>
-                     <Text className='font-bold uppercase selft-start'>{backItem.category}</Text>
-                     <Text className='font-bold mb-3 uppercase text-primary'>
-                        {backItem?.title}
-                     </Text>
-                     <Text className=' mb-5'>{backItem?.content}</Text>
+               return (
+                  <View key={item.front.id} className={`items-center pt-8 px-5 bg-blue-50`} style={[{ width }]}>
+                     {item.back.map((backItem: any) => (
+                        <View key={backItem.id} className='mb-5'>
+                           <Text className='font-bold uppercase  text-center'>{backItem.category}</Text>
+                           <Text className='font-bold mb-3 uppercase text-primary text-center'>{backItem?.title}</Text>
+                           <Text>{backItem?.content}</Text>
+                        </View>
+                     ))}
                   </View>
-               })
+               )
             }}
          />
       </Layout>

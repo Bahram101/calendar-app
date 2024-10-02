@@ -10,19 +10,19 @@ import Loader from '@/components/ui/Loader'
 import { getAdjacentDates, getNextDate, getShiftedDate } from '@/utils/helpers'
 import { useFetchData } from '@/components/hooks/useFetchData'
 
-const FrontPage: FC = () => {
+const FrontPage: FC = React.memo(() => {
 	const { width } = Dimensions.get('window')
 	const [activeIndex, setActiveIndex] = useState(1)
 	const [prevIndex, setPrevIndex] = useState<number | null>(null);
 	const [isFirstSwipe, setIsFirstSwipe] = useState(true); // Для первого свайпа
 	const { date, setDate } = useGetActiveSwiperDate()
-	const { dataList, isLoading, fetchData } = useFetchData();
+	const { dataList, setDataList, isLoading, fetchData } = useFetchData();
 
 	useEffect(() => {
 		const dates = getAdjacentDates(date);
 		const fetchDateList = async () => {
 			for (const item of dates) {
-				await fetchData(item,);
+				await fetchData(item);
 			}
 			setDate(date);
 		};
@@ -32,57 +32,55 @@ const FrontPage: FC = () => {
 
 	const handleChange = useCallback(
 		({ index }: { index: number }) => {
-			// Логика для первого свайпа
 			if (prevIndex === null) {
-				// Сравниваем с начальным индексом
 				if (index > activeIndex) {
-					console.log('First swipe right'); 
+					console.log('First swipe right');
 					const currentActiveDate = dataList[index].front.date;
 					const nextDate = getShiftedDate(currentActiveDate, 1);
-					console.log('nextDate1',nextDate)
-					setDate(dataList[index].front.date);
-					fetchData(nextDate);
+					console.log('nextDate1', nextDate)
+					console.log('index', index)
+					console.log('activeIndex', activeIndex)
+					setDate(currentActiveDate);
+					fetchData(nextDate)
 				} else if (index < activeIndex) {
-					console.log('First swipe left'); // Первый свайп влево					
+					console.log('First swipe left');
 					const currentActiveDate = dataList[index].front.date;
+					setDate(currentActiveDate);
 					const previousDate = getShiftedDate(currentActiveDate, -1);
-					console.log('index', index); 
+					fetchData(previousDate, 'left');	
+					console.log('index', index);
 					console.log('activeIndex', activeIndex);
 					console.log('currentActiveDate', currentActiveDate)
 					console.log('prevDate1', previousDate)
-					console.log('currentActiveDate', currentActiveDate)
-					setDate(currentActiveDate);
-					fetchData(previousDate, 'left');	
 				}
-				setPrevIndex(index); 
+				setPrevIndex(index);
 			} else {
 				if (index > prevIndex) {
 					console.log('Swiped right');
-					if (index === dataList.length - 1 && !isLoading) {
-						const currentActiveDate = dataList[index].front.date;
-						const nextDate = getShiftedDate(currentActiveDate, 1);
-						setDate(currentActiveDate);
-						fetchData(nextDate);
-					}
+					console.log('index', index);
+					console.log('prevIndex', prevIndex);
+					const currentActiveDate = dataList[index].front.date;
+					const nextDate = getShiftedDate(currentActiveDate, 1);
+					setDate(currentActiveDate);
+					fetchData(nextDate);
 				} else if (index < prevIndex) {
-					console.log('Swiped left');
-					if (!isLoading) {
-						const previousDate = getShiftedDate(dataList[index].front.date, -1);
-						console.log('prevDate2', previousDate)
-						setDate(dataList[index].front.date);
-						fetchData(previousDate, 'left');
-					} else {
-						console.log('ELSE')
-					}
+					console.log('Swiped left');				
+					console.log('index', index);				
+					console.log('prevIndex', prevIndex);				
+					const currentActiveDate = dataList[index].front.date
+					const previousDate = getShiftedDate(currentActiveDate, -1);
+					console.log('prevDate2', previousDate)
+					setDate(currentActiveDate);
+					fetchData(previousDate, 'left');
 				}
-				setPrevIndex(index); // Обновляем предыдущий индекс
+				setPrevIndex(index);
 			}
 		},
 		[isFirstSwipe, prevIndex, isLoading]
 	);
 
 	// console.log('DATA_LIST', JSON.stringify(dataList, null, 2))
-	console.log('date2',date)
+	console.log('date2', date)
 
 
 
@@ -114,6 +112,6 @@ const FrontPage: FC = () => {
 			/>
 		</Layout>
 	)
-}
+})
 
 export default FrontPage
