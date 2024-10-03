@@ -19,7 +19,7 @@ export const useFetchData = () => {
 				setDataList(prev => [response, ...prev])
 			}
 			setIsLoading(false)
-			return response
+			// return response
 		} catch (error) {
 			console.error('Ошибка при получении данных:', error)
 			setIsLoading(false)

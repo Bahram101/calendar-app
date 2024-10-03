@@ -13,8 +13,7 @@ import { useFetchData } from '@/components/hooks/useFetchData'
 const FrontPage: FC = React.memo(() => {
 	const { width } = Dimensions.get('window')
 	const [activeIndex, setActiveIndex] = useState(1)
-	const [prevIndex, setPrevIndex] = useState<number | null>(null);
-	const [isFirstSwipe, setIsFirstSwipe] = useState(true); // Для первого свайпа
+	const [prevIndex, setPrevIndex] = useState<number | null>(null); 
 	const { date, setDate } = useGetActiveSwiperDate()
 	const { dataList, setDataList, isLoading, fetchData } = useFetchData();
 
@@ -24,63 +23,59 @@ const FrontPage: FC = React.memo(() => {
 			for (const item of dates) {
 				await fetchData(item);
 			}
-			setDate(date);
+		
 		};
 		fetchDateList();
+		setDate(date);
 	}, []);
 
 
 	const handleChange = useCallback(
-		({ index }: { index: number }) => {
+		async ({ index }: { index: number }) => {
 			if (prevIndex === null) {
 				if (index > activeIndex) {
 					console.log('First swipe right');
+					console.log('index',index)
 					const currentActiveDate = dataList[index].front.date;
 					const nextDate = getShiftedDate(currentActiveDate, 1);
-					console.log('nextDate1', nextDate)
-					console.log('index', index)
-					console.log('activeIndex', activeIndex)
 					setDate(currentActiveDate);
 					fetchData(nextDate)
 				} else if (index < activeIndex) {
 					console.log('First swipe left');
-					const currentActiveDate = dataList[index].front.date;
-					setDate(currentActiveDate);
-					const previousDate = getShiftedDate(currentActiveDate, -1);
-					fetchData(previousDate, 'left');	
 					console.log('index', index);
-					console.log('activeIndex', activeIndex);
-					console.log('currentActiveDate', currentActiveDate)
-					console.log('prevDate1', previousDate)
+					const currentActiveDate = dataList[index].front.date;
+					const previousDate = getShiftedDate(currentActiveDate, -1);
+					setDate(currentActiveDate);					
+				  fetchData(previousDate, 'left') 
+					console.log('activeIndex', activeIndex)
 				}
 				setPrevIndex(index);
 			} else {
 				if (index > prevIndex) {
 					console.log('Swiped right');
-					console.log('index', index);
-					console.log('prevIndex', prevIndex);
+					console.log('index',index);	
 					const currentActiveDate = dataList[index].front.date;
 					const nextDate = getShiftedDate(currentActiveDate, 1);
 					setDate(currentActiveDate);
 					fetchData(nextDate);
+					console.log('activeIndex',activeIndex)
 				} else if (index < prevIndex) {
-					console.log('Swiped left');				
-					console.log('index', index);				
-					console.log('prevIndex', prevIndex);				
+					console.log('Swiped left');						
+					console.log('index',index);						
 					const currentActiveDate = dataList[index].front.date
 					const previousDate = getShiftedDate(currentActiveDate, -1);
-					console.log('prevDate2', previousDate)
 					setDate(currentActiveDate);
 					fetchData(previousDate, 'left');
 				}
 				setPrevIndex(index);
 			}
 		},
-		[isFirstSwipe, prevIndex, isLoading]
+		[isLoading]
 	);
 
 	// console.log('DATA_LIST', JSON.stringify(dataList, null, 2))
-	console.log('date2', date)
+	// console.log('date2', date)
+	console.log('prevIndex', prevIndex)
 
 
 
