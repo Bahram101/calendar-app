@@ -9,7 +9,6 @@ import Loader from '@/components/ui/Loader'
 
 import { getAdjacentDates, getNextDate, getShiftedDate } from '@/utils/helpers'
 import { useFetchData } from '@/components/hooks/useFetchData'
-import { useGetDataList } from '@/components/hooks/useGetDataList'
 
 const FrontPage: FC = React.memo(() => {
 	const { width } = Dimensions.get('window')
@@ -19,10 +18,10 @@ const FrontPage: FC = React.memo(() => {
 	const { dataList, isLoading, fetchData } = useFetchData();
 
 	useEffect(() => {
-		const dates = getAdjacentDates(date);
+		const dates = getAdjacentDates(date)
 		const fetchDateList = async () => {
 			for (const item of dates) {
-				await fetchData(item);
+				await fetchData(item)
 			}
 		};
 		fetchDateList().then(() => setDataListFromCtx(dataList))
@@ -40,7 +39,7 @@ const FrontPage: FC = React.memo(() => {
 			setPrevIndex(index);
 		},
 		[isLoading]
-	);
+	)
 
 	console.log('FRONT_LIST_CTX', JSON.stringify(dataListFromCtx, null, 2)) 
 
@@ -49,7 +48,10 @@ const FrontPage: FC = React.memo(() => {
 	) : (
 		<Layout className='px-5'>
 			<SwiperFlatList
-				onChangeIndex={data => handleChange(data)}
+				onChangeIndex={data => {
+					console.log('dddddd', data)
+					handleChange(data)
+				}}
 				data={dataList}
 				index={dataList.length > 1 ? activeIndex : undefined}
 				renderItem={({ item }) => {
