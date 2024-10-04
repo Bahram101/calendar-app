@@ -13,44 +13,43 @@ import { useFetchData } from '@/components/hooks/useFetchData'
 const BackPage: FC = () => {
    const { width } = Dimensions.get('window')
    const [activeIndex, setActiveIndex] = useState(1)
-   const { date, setDate } = useGetActiveSwiperDate()
+   const [prevIndex, setPrevIndex] = useState<number>(0);
    const { dataList, isLoading, fetchData } = useFetchData();
+   const { date, setDate, dataListFromCtx, setDataListFromCtx } = useGetActiveSwiperDate()
 
-   useEffect(() => {
-      const dates = getAdjacentDates(date);
-      const fetchDateList = async () => {
-         for (const item of dates) {
-            await fetchData(item);
-         }
-         setDate(date);
-      };
-      fetchDateList();
-   }, []);
+	useEffect(() => {
+		// Проверяем наличие данных перед рендером
+		if (dataListFromCtx.length === 0) {
+			console.log('No data in context yet');
+         setDataListFromCtx(dataList);
+		}
+	}, [dataList]);
 
    const handleChange = useCallback(
-      ({ index }: { index: number }) => {
-
-         if (index === dataList.length - 1 && !isLoading) {
+      async ({ index }: { index: number }) => {
+         if (index > prevIndex) {
             const currentActiveDate = dataList[index].front.date;
             const nextDate = getShiftedDate(currentActiveDate, 1);
             setDate(currentActiveDate);
-            fetchData(nextDate);
+            await fetchData(nextDate);
+            setDataListFromCtx(dataList)
          }
+         setPrevIndex(index);
       },
       [isLoading]
-   )
+   );
 
-   // console.log('DATA_LIST_BACK', JSON.stringify(dataList.flat(), null, 2))
-   // console.log('DATE_BACK_CTX', date)
 
-   return isLoading && dataList.length < 3 ? (
+   console.log('BACK_LIST_CTX', JSON.stringify(dataListFromCtx, null, 2))
+
+   return isLoading && dataListFromCtx.length < 3 ? (
       <Loader />
    ) : (
       <Layout className='px-5'>
          <SwiperFlatList
             onChangeIndex={data => handleChange(data)}
-            data={dataList}
-            index={dataList.length > 1 ? activeIndex : undefined}
+            data={dataListFromCtx}
+            index={dataListFromCtx.length > 1 ? activeIndex : undefined}
             renderItem={({ item }) => {
                return (
                   <View key={item.front.id} className={`items-center pt-8 px-5 bg-blue-50`} style={[{ width }]}>

@@ -13,11 +13,7 @@ export const useFetchData = () => {
 				url: `/datas?date=${date}`,
 				method: 'GET'
 			})
-			if (direction === 'right') {
-				setDataList(prev => [...prev, response])
-			} else {
-				setDataList(prev => [response, ...prev])
-			}
+			setDataList(prev => [...prev, response])
 			setIsLoading(false)
 			// return response
 		} catch (error) {
