@@ -39,12 +39,6 @@ export const convertToMiladiMonth = (month: string) => {
 	return monthName
 }
 
-export const getNextDate = (date: string, ): string => {
-	const currentDate = new Date(date)
-	currentDate.setDate(currentDate.getDate() + 1)
-	return currentDate.toISOString().split('T')[0].toString()
-}
-
 export const getAdjacentDates = (currentDate: string | null) => {
 	if (!currentDate) {
     throw new Error("Invalid date");
@@ -58,9 +52,9 @@ export const getAdjacentDates = (currentDate: string | null) => {
 	nextDate.setDate(nextDate.getDate() + 1)
 
 	return [
-		prevDate?.toISOString()?.split('T')[0],
+		prevDate?.toISOString()?.split('T')[0].toString(),
 		currentDate,
-		nextDate?.toISOString()?.split('T')[0]
+		nextDate?.toISOString()?.split('T')[0].toString()
 	]
 }
 

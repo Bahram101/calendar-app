@@ -6,16 +6,17 @@ export const useFetchData = () => {
 	const [isLoading, setIsLoading] = useState(false)
 	const [dataList, setDataList] = useState<any[]>([])
 
-	const fetchData = async (date: string | null, direction = 'right') => {
+	const fetchData = async (date: string | null) => {
 		setIsLoading(true)
 		try {
 			const response = await request({
 				url: `/datas?date=${date}`,
 				method: 'GET'
-			})
-			setDataList(prev => [...prev, response])
+			}) 
+			// setDataList(prev => [...prev, response])
+			
 			setIsLoading(false)
-			// return response
+			return response
 		} catch (error) {
 			console.error('Ошибка при получении данных:', error)
 			setIsLoading(false)
