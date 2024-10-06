@@ -12,49 +12,56 @@ import { getAdjacentDates, getShiftedDate } from '@/utils/helpers'
 
 const FrontPage: FC = React.memo(() => {
 	const { width } = Dimensions.get('window')
-	const [activeIndex, setActiveIndex] = useState(1)
+	// const [activeIndex, setActiveIndex] = useState(1)
 	const [prevIndex, setPrevIndex] = useState<number | null>(null)
-	const { date, setDate, dataListFromCtx, setDataListFromCtx } =
-		useGetActiveSwiperDate()
-	const { dataList, isLoading, fetchData } = useFetchData()
+	const {
+		date,
+		setDate,
+		activeIndex,
+		setActiveIndex,
+		dataListFromCtx,
+		setDataListFromCtx
+	} = useGetActiveSwiperDate()
+	const { isLoading, fetchData } = useFetchData()
 	const [isFetching, setIsFetching] = useState(false)
+	
+	useEffect(()=>{
+		setActiveIndex(activeIndex)
+	}, [activeIndex])
 
 	const handleChange = useCallback(
 		async ({ index }: { index: number }) => {
 			if (!isFetching && (prevIndex === null || index > prevIndex)) {
-				setIsFetching(true) 
+				setIsFetching(true)
 
 				const currentActiveDate = dataListFromCtx[index]?.front.date
 				const nextDate = getShiftedDate(currentActiveDate, 1)
-				console.log('nextDate',nextDate)
-				// Проверяем, существует ли следующая дата
+
 				if (currentActiveDate) {
 					setDate(currentActiveDate)
 				}
 
-				// Проверяем, если данные уже существуют для следующей даты
 				const nextDateDataExists = dataListFromCtx.some(
-					(item) => item?.front?.date === nextDate
+					item => item?.front?.date === nextDate
 				)
 
-				if (!nextDateDataExists) { 
+				if (!nextDateDataExists) {
 					const newData = await fetchData(nextDate)
 					if (newData) {
-						setDataListFromCtx((prev) => [...prev, newData])
+						setDataListFromCtx(prev => [...prev, newData])
 					}
 				} 
-
-				// Обновляем индексы и отключаем блокировку
-				setPrevIndex(index)
 				setActiveIndex(index)
-				setIsFetching(false)
+				setPrevIndex(index)
+				setIsFetching(false) 
 			}
 		},
-		[prevIndex, dataListFromCtx, fetchData, setDate, setDataListFromCtx, isFetching]
+		[prevIndex, dataListFromCtx, isFetching, activeIndex]
 	)
 
-	console.log('Front_DATA_LIST_CTX', JSON.stringify(dataListFromCtx, null, 2))
-	// console.log('date2', date)
+	// console.log('Front_DATA_LIST_CTX', JSON.stringify(dataListFromCtx, null, 2))
+	console.log('activeIndex-front', activeIndex)
+	console.log('prevIndex', prevIndex) 
 
 	return isLoading && dataListFromCtx.length < 3 ? (
 		<Loader />

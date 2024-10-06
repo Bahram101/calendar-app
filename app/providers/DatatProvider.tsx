@@ -18,8 +18,9 @@ export const DataContext = createContext({} as IContext)
 
 const DataProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
 	const [date, setDate] = useState<TypeUserState>(null)
-	const { dataList, fetchData } = useFetchData()
 	const [dataListFromCtx, setDataListFromCtx] = useState<any[]>([])
+	const [activeIndex, setActiveIndex] = useState<number>(1)
+	const { fetchData } = useFetchData()
 
 	useEffect(() => {
 		const today = new Date()
@@ -27,14 +28,14 @@ const DataProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
 		const dates = getAdjacentDates(currentDate)
 
 		const fetchDateList = async () => {
-      const fetchedDataList = []  // Временный массив для сохранения данных
+      const fetchedDataList = []  
       for (const item of dates) {
         const data = await fetchData(item)
         if (data) {
-          fetchedDataList.push(data)  // Добавляем полученные данные
+          fetchedDataList.push(data) 
         }
       }
-      setDataListFromCtx(fetchedDataList)  // Сохраняем в состояние
+      setDataListFromCtx(fetchedDataList)  
     }
 
     fetchDateList()
@@ -49,10 +50,12 @@ const DataProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
 		() => ({
 			date,
 			setDate,
+			activeIndex,
+			setActiveIndex,
 			dataListFromCtx,
 			setDataListFromCtx
 		}),
-		[date, dataListFromCtx]
+		[date, dataListFromCtx, activeIndex]
 	)
 
 	return <DataContext.Provider value={value}>{children}</DataContext.Provider>
