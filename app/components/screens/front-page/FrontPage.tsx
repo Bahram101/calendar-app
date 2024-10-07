@@ -4,15 +4,14 @@ import RenderHTML from 'react-native-render-html'
 import { SwiperFlatList } from 'react-native-swiper-flatlist'
 
 import { useFetchData } from '@/components/hooks/useFetchData'
-import { useGetActiveSwiperDate } from '@/components/hooks/useGetActiveSwiperDate'
+import { useGetContextData } from '@/components/hooks/useGetContextData'
 import Layout from '@/components/layout/Layout'
 import Loader from '@/components/ui/Loader'
 
-import { getAdjacentDates, getShiftedDate } from '@/utils/helpers'
+import { getShiftedDate } from '@/utils/helpers'
 
-const FrontPage: FC = React.memo(() => {
+const FrontPage: FC = () => {
 	const { width } = Dimensions.get('window')
-	// const [activeIndex, setActiveIndex] = useState(1)
 	const [prevIndex, setPrevIndex] = useState<number | null>(null)
 	const {
 		date,
@@ -21,13 +20,16 @@ const FrontPage: FC = React.memo(() => {
 		setActiveIndex,
 		dataListFromCtx,
 		setDataListFromCtx
-	} = useGetActiveSwiperDate()
+	} = useGetContextData()
 	const { isLoading, fetchData } = useFetchData()
 	const [isFetching, setIsFetching] = useState(false)
-	
-	useEffect(()=>{
-		setActiveIndex(activeIndex)
-	}, [activeIndex])
+
+	const [renderTrigger, setRenderTrigger] = useState(false);
+
+	useEffect(() => {
+		setRenderTrigger(prev => !prev); // Это триггерит рендеринг
+	}, [activeIndex]);
+
 
 	const handleChange = useCallback(
 		async ({ index }: { index: number }) => {
@@ -48,29 +50,34 @@ const FrontPage: FC = React.memo(() => {
 				if (!nextDateDataExists) {
 					const newData = await fetchData(nextDate)
 					if (newData) {
-						setDataListFromCtx(prev => [...prev, newData])
+						setDataListFromCtx((prev: any) => [...prev, newData])
 					}
-				} 
+				}
 				setActiveIndex(index)
 				setPrevIndex(index)
-				setIsFetching(false) 
+				setIsFetching(false)
+			} else {
+				console.log('ELSE')
+				// setActiveIndex(index);
+				// setPrevIndex(index);
 			}
 		},
-		[prevIndex, dataListFromCtx, isFetching, activeIndex]
+		[prevIndex, dataListFromCtx, isFetching]
 	)
 
 	// console.log('Front_DATA_LIST_CTX', JSON.stringify(dataListFromCtx, null, 2))
-	console.log('activeIndex-front', activeIndex)
-	console.log('prevIndex', prevIndex) 
+	console.log('F-activeIndex', activeIndex)
+	// console.log('date', date)
 
 	return isLoading && dataListFromCtx.length < 3 ? (
 		<Loader />
 	) : (
 		<Layout className='px-5'>
 			<SwiperFlatList
+				key={renderTrigger ? "true" : "false"}
 				onChangeIndex={data => handleChange(data)}
 				data={dataListFromCtx}
-				index={dataListFromCtx.length > 1 ? activeIndex : undefined}
+				index={activeIndex}
 				renderItem={({ item }) => {
 					return (
 						<View className={`items-center pt-8 px-5`} style={[{ width }]}>
@@ -91,6 +98,6 @@ const FrontPage: FC = React.memo(() => {
 			/>
 		</Layout>
 	)
-})
+}
 
 export default FrontPage

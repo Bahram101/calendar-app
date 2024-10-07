@@ -1,10 +1,9 @@
 import { FC, useCallback, useEffect, useState } from 'react'
 import { Dimensions, Text, View } from 'react-native'
 import SwiperFlatList from 'react-native-swiper-flatlist'
-import { jsx } from 'react/jsx-runtime'
 
 import { useFetchData } from '@/components/hooks/useFetchData'
-import { useGetActiveSwiperDate } from '@/components/hooks/useGetActiveSwiperDate'
+import { useGetContextData } from '@/components/hooks/useGetContextData'
 import Layout from '@/components/layout/Layout'
 import Loader from '@/components/ui/Loader'
 
@@ -12,22 +11,17 @@ import { getShiftedDate } from '@/utils/helpers'
 
 const BackPage: FC = () => {
 	const { width } = Dimensions.get('window')
-	// const [activeIndex, setActiveIndex] = useState(1)
 	const [prevIndex, setPrevIndex] = useState<number | null>(null)
 	const {
 		date,
 		setDate,
 		dataListFromCtx,
+		setDataListFromCtx,
 		activeIndex,
 		setActiveIndex,
-		setDataListFromCtx
-	} = useGetActiveSwiperDate()
+	} = useGetContextData()
 	const { isLoading, fetchData } = useFetchData()
-	const [isFetching, setIsFetching] = useState(false)
-
-  useEffect(()=>{
-		setActiveIndex(activeIndex)
-	}, [activeIndex])
+	const [isFetching, setIsFetching] = useState(false) 
 
 	const handleChange = useCallback(
 		async ({ index }: { index: number }) => {
@@ -54,13 +48,17 @@ const BackPage: FC = () => {
 				setActiveIndex(index)
 				setPrevIndex(index)
 				setIsFetching(false)
-			}
+			} else {
+				console.log('ELSE')
+        setActiveIndex(index); // Обновляем только activeIndex
+        setPrevIndex(index); // Обновляем prevIndex
+      }
 		},
 		[prevIndex, dataListFromCtx, isFetching]
 	)
 
 	// console.log('Back_DATA_LIST_CTX', JSON.stringify(dataListFromCtx, null, 2))
-	console.log('activeIndex-back', activeIndex)
+	console.log('B-activeIndex', activeIndex)
 
 	return isLoading && dataListFromCtx.length < 3 ? (
 		<Loader />
@@ -69,7 +67,7 @@ const BackPage: FC = () => {
 			<SwiperFlatList
 				onChangeIndex={data => handleChange(data)}
 				data={dataListFromCtx}
-				index={dataListFromCtx.length > 1 ? activeIndex : undefined}
+				index={ activeIndex }
 				renderItem={({ item }) => {
 					return (
 						<View

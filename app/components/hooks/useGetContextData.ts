@@ -2,4 +2,4 @@ import { useContext } from 'react'
 
 import { DataContext } from '@/providers/DatatProvider'
 
-export const useGetActiveSwiperDate = () => useContext(DataContext)
+export const useGetContextData = () => useContext(DataContext)
