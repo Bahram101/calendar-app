@@ -1,6 +1,7 @@
 import React, { FC, useCallback, useEffect, useState } from 'react'
 import { Dimensions, Text, View } from 'react-native'
 import RenderHTML from 'react-native-render-html'
+import HTMLView from 'react-native-htmlview';
 import { SwiperFlatList } from 'react-native-swiper-flatlist'
 
 import { useFetchData } from '@/components/hooks/useFetchData'
@@ -12,35 +13,34 @@ import { getShiftedDate } from '@/utils/helpers'
 
 const FrontPage: FC = () => {
 	const { width } = Dimensions.get('window')
-	const [prevIndex, setPrevIndex] = useState<number | null>(null)
 	const {
-		date,
-		setDate,
+		dateToday,
+		activeSwiperDate,
+		setActiveSwiperDate,
 		activeIndex,
 		setActiveIndex,
 		dataListFromCtx,
 		setDataListFromCtx
 	} = useGetContextData()
-	const { isLoading, fetchData } = useFetchData()
-	const [isFetching, setIsFetching] = useState(false)
 
-	const [renderTrigger, setRenderTrigger] = useState(false);
+	const { isLoading, fetchData } = useFetchData()
+	const [isFetching, setIsFetching] = useState<boolean>(false)
+	const [renderTrigger, setRenderTrigger] = useState<boolean>(false);
 
 	useEffect(() => {
-		setRenderTrigger(prev => !prev); // Это триггерит рендеринг
+		setRenderTrigger(prev => !prev);
 	}, [activeIndex]);
 
-
 	const handleChange = useCallback(
-		async ({ index }: { index: number }) => {
-			if (!isFetching && (prevIndex === null || index > prevIndex)) {
+		async ({ index, prevIndex }: { index: number, prevIndex: number }) => {
+			if (!isFetching && index > prevIndex) {
 				setIsFetching(true)
 
 				const currentActiveDate = dataListFromCtx[index]?.front.date
 				const nextDate = getShiftedDate(currentActiveDate, 1)
 
 				if (currentActiveDate) {
-					setDate(currentActiveDate)
+					setActiveSwiperDate(currentActiveDate)
 				}
 
 				const nextDateDataExists = dataListFromCtx.some(
@@ -54,20 +54,20 @@ const FrontPage: FC = () => {
 					}
 				}
 				setActiveIndex(index)
-				setPrevIndex(index)
+				setActiveIndex(index)
 				setIsFetching(false)
-			} else {
-				console.log('ELSE')
-				// setActiveIndex(index);
-				// setPrevIndex(index);
+			} else if (index < prevIndex) {
+				const currentActiveDate = dataListFromCtx[index]?.front.date
+				setActiveSwiperDate(currentActiveDate)
+				setActiveIndex(index)
 			}
 		},
-		[prevIndex, dataListFromCtx, isFetching]
+		[dataListFromCtx, isFetching]
 	)
 
-	// console.log('Front_DATA_LIST_CTX', JSON.stringify(dataListFromCtx, null, 2))
-	console.log('F-activeIndex', activeIndex)
-	// console.log('date', date)
+	const getColorForDate = (itemDate: string) => {
+		return itemDate === dateToday ? 'text-primary' : 'text-gray-400';
+	};
 
 	return isLoading && dataListFromCtx.length < 3 ? (
 		<Loader />
@@ -79,19 +79,26 @@ const FrontPage: FC = () => {
 				data={dataListFromCtx}
 				index={activeIndex}
 				renderItem={({ item }) => {
+					const textColor = getColorForDate(item?.front.date);
 					return (
 						<View className={`items-center pt-8 px-5`} style={[{ width }]}>
 							<Text className='text-xl font-bold uppercase selft-start'>
 								{item?.front.hijri_date}
 							</Text>
-							<Text className='font-bold mb-3 text-[180px] text-primary'>
+							<Text className={`font-bold mb-3 text-[180px] ${textColor}`}>
 								{item?.front.day}
 							</Text>
-							<Text className='text-2xl font-bold uppercase mb-5'>
+							<Text className='text-2xl font-bold uppercase'>
 								{item?.front.year_month}
 							</Text>
+							<Text className={`uppercase text-2xl font-bold mb-5 ${textColor}`}>
+								{item.front.dayofweek}</Text>
 							<Text style={{ width }}>{item?.front.history}</Text>
 							<Text style={{ width }}>{item?.front.quote}</Text>
+							<HTMLView
+								value={item?.front.quote}
+								// stylesheet={styles}
+							/>
 						</View>
 					)
 				}}

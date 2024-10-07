@@ -13,18 +13,18 @@ const BackPage: FC = () => {
 	const { width } = Dimensions.get('window')
 	const [prevIndex, setPrevIndex] = useState<number | null>(null)
 	const {
-		date,
-		setDate,
-		dataListFromCtx,
-		setDataListFromCtx,
+		activeSwiperDate,
+		setActiveSwiperDate,
 		activeIndex,
 		setActiveIndex,
+		dataListFromCtx,
+		setDataListFromCtx,
 	} = useGetContextData()
 	const { isLoading, fetchData } = useFetchData()
-	const [isFetching, setIsFetching] = useState(false) 
+	const [isFetching, setIsFetching] = useState(false)
 
 	const handleChange = useCallback(
-		async ({ index }: { index: number }) => {
+		async ({ index, prevIndex }: { index: number, prevIndex: number }) => {
 			if (!isFetching && (prevIndex === null || index > prevIndex)) {
 				setIsFetching(true)
 
@@ -32,7 +32,7 @@ const BackPage: FC = () => {
 				const nextDate = getShiftedDate(currentActiveDate, 1)
 
 				if (currentActiveDate) {
-					setDate(currentActiveDate)
+					setActiveSwiperDate(currentActiveDate)
 				}
 
 				const nextDateDataExists = dataListFromCtx.some(
@@ -46,15 +46,14 @@ const BackPage: FC = () => {
 					}
 				}
 				setActiveIndex(index)
-				setPrevIndex(index)
 				setIsFetching(false)
-			} else {
-				console.log('ELSE')
-        setActiveIndex(index); // Обновляем только activeIndex
-        setPrevIndex(index); // Обновляем prevIndex
-      }
+			} else if (index < prevIndex) {
+				const currentActiveDate = dataListFromCtx[index]?.front.date
+				setActiveSwiperDate(currentActiveDate)
+				setActiveIndex(index)
+			}
 		},
-		[prevIndex, dataListFromCtx, isFetching]
+		[dataListFromCtx, isFetching]
 	)
 
 	// console.log('Back_DATA_LIST_CTX', JSON.stringify(dataListFromCtx, null, 2))
@@ -67,21 +66,28 @@ const BackPage: FC = () => {
 			<SwiperFlatList
 				onChangeIndex={data => handleChange(data)}
 				data={dataListFromCtx}
-				index={ activeIndex }
+				index={activeIndex}
 				renderItem={({ item }) => {
+					const month = item.front.year_month.split(' / ')[0]
+					const year = item.front.year_month.split(' / ')[1]
 					return (
 						<View
 							key={item.front.id}
-							className={`items-center pt-8 px-5 bg-blue-50`}
+							className={`items-center pt-4 px-5`}
 							style={[{ width }]}
 						>
+							<Text className='uppercase font-bold text-gray-500 text-xs mb-2'>
+								<Text>{`${item.front.day}-${month} ${year}`}</Text>
+							  <Text> | </Text>
+								<Text>{`${item.front.hijri_date}`}</Text>
+							</Text>
 							{item.back.map((backItem: any) => (
 								<View key={backItem.id} className='mb-5'>
-									<Text>{date}</Text>
-									<Text className='font-bold uppercase  text-center'>
+
+									<Text className='font-bold uppercase text-center mb-1'>
 										{backItem.category}
 									</Text>
-									<Text className='font-bold mb-3 uppercase text-primary text-center'>
+									<Text className='font-bold mb-3 uppercase text-primary text-center text-lg'>
 										{backItem?.title}
 									</Text>
 									<Text>{backItem?.content}</Text>

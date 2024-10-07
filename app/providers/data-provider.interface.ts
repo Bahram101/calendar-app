@@ -1,11 +1,13 @@
 import { Dispatch, SetStateAction } from 'react'
 
-export type TypeUserState = string | null
+export type TypeDateState = string | null
 export type TypeActiveIndex = number
 
 export interface IContext {
-	date: TypeUserState
-	setDate: Dispatch<SetStateAction<TypeUserState>>
+	dateToday: TypeDateState
+	setDateToday: Dispatch<SetStateAction<TypeDateState>>
+	activeSwiperDate: TypeDateState
+	setActiveSwiperDate: Dispatch<SetStateAction<TypeDateState>>
 	activeIndex: TypeActiveIndex
 	setActiveIndex: Dispatch<SetStateAction<TypeActiveIndex>>
 	dataListFromCtx: any[]

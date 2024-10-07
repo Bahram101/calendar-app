@@ -54,8 +54,8 @@ const Home: FC = () => {
 						<Text className='text-bold mb-5 text-lg'>
 							{item.date} (Хижри: {item.hijri_date})
 						</Text>
-						<RenderHTML contentWidth={width} source={{ html: item.history }} />
-						<RenderHTML contentWidth={width} source={{ html: item.quote }} />
+						{/* <RenderHTML contentWidth={width} source={{ html: item.history }} />
+						<RenderHTML contentWidth={width} source={{ html: item.quote }} /> */}
 					</View>
 				)}
 			/>
