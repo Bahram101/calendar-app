@@ -10,6 +10,6 @@ export interface IContext {
 	setActiveSwiperDate: Dispatch<SetStateAction<TypeDateState>>
 	activeIndex: TypeActiveIndex
 	setActiveIndex: Dispatch<SetStateAction<TypeActiveIndex>>
-	dataListFromCtx: any[]
-	setDataListFromCtx: (dataList: any[]) => void
+	dataList: any[]
+	setDataList: (dataList: any[]) => void
 }

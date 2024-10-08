@@ -20,7 +20,7 @@ const DataProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
 	const [dateToday, setDateToday] = useState<TypeDateState>(null)
 	const [activeSwiperDate, setActiveSwiperDate] = useState<TypeDateState>(null)
 	const [activeIndex, setActiveIndex] = useState<number>(1)
-	const [dataListFromCtx, setDataListFromCtx] = useState<any[]>([])
+	const [dataList, setDataList] = useState<any[]>([])
 	const { fetchData } = useFetchData()
 
 	useEffect(() => {
@@ -40,7 +40,7 @@ const DataProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
 					fetchedDataList.push(data)
 				}
 			}
-			setDataListFromCtx(fetchedDataList)
+			setDataList(fetchedDataList)
 		}
 
 		fetchDateList()
@@ -55,10 +55,10 @@ const DataProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
 			setActiveSwiperDate,
 			activeIndex,
 			setActiveIndex,
-			dataListFromCtx,
-			setDataListFromCtx
+			dataList,
+			setDataList
 		}),
-		[dateToday, activeSwiperDate, activeIndex, dataListFromCtx]
+		[dateToday, activeSwiperDate, activeIndex, dataList]
 	)
 
 	return <DataContext.Provider value={value}>{children}</DataContext.Provider>

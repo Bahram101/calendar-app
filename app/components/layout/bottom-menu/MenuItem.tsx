@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Pressable, Text, View } from 'react-native'
+import { Pressable } from 'react-native'
 import { IMenuItem, TypeNavigate } from './menu.interface'
 import { Feather } from '@expo/vector-icons'
 
