@@ -54,7 +54,6 @@ const FrontPage: FC = () => {
 					}
 				}
 				setActiveIndex(index)
-				setActiveIndex(index)
 				setIsFetching(false)
 			} else if (index < prevIndex) {
 				const currentActiveDate = dataListFromCtx[index]?.front.date
@@ -91,14 +90,32 @@ const FrontPage: FC = () => {
 							<Text className='text-2xl font-bold uppercase'>
 								{item?.front.year_month}
 							</Text>
-							<Text className={`uppercase text-2xl font-bold mb-5 ${textColor}`}>
+							<Text className={`uppercase text-2xl font-bold mb-[40px] ${textColor}`}>
 								{item.front.dayofweek}</Text>
-							<Text style={{ width }}>{item?.front.history}</Text>
-							<Text style={{ width }}>{item?.front.quote}</Text>
-							<HTMLView
-								value={item?.front.quote}
-								// stylesheet={styles}
-							/>
+
+
+							<View className='mb-[20px] w-full border-b border-gray-300 pb-4' >
+								<HTMLView
+									value={item?.front.history.replace(/\n/g, '')}
+									stylesheet={{
+										p: {
+											textAlign: 'center',
+											// lineHeight: 23,
+										},
+									}}
+								/>
+							</View>
+							<View className='w-full text-center'>
+								<HTMLView
+									value={item?.front.quote.replace(/\n/g, '')}
+									stylesheet={{
+										p: {
+											textAlign: 'center',
+											marginBottom: -17,
+										},
+									}}
+								/>
+							</View>
 						</View>
 					)
 				}}

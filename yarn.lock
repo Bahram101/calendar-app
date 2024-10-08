@@ -2355,6 +2355,14 @@
   dependencies:
     ts-toolbelt "^6.15.1"
 
+"@types/react-native-htmlview@^0.16.5":
+  version "0.16.5"
+  resolved "https://registry.npmjs.org/@types/react-native-htmlview/-/react-native-htmlview-0.16.5.tgz"
+  integrity sha512-IXm/TLkmxPfthSKNtSX0HIbRCqqaPv/JdT70W6lkxmPw9E2j9/eq/QK2Vy7s4QoA7/IQi6R5affES8Wp7/zU4Q==
+  dependencies:
+    "@types/react" "*"
+    react-native "*"
+
 "@types/react-native@*":
   version "0.73.0"
   resolved "https://registry.npmjs.org/@types/react-native/-/react-native-0.73.0.tgz"
