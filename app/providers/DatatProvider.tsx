@@ -13,6 +13,7 @@ import { useFetchData } from '@/components/hooks/useFetchData'
 import { getAdjacentDates } from '@/utils/helpers'
 
 import { IContext, TypeDateState } from './data-provider.interface'
+import { Data } from '@/types/fbdata.interface'
 
 export const DataContext = createContext({} as IContext)
 
@@ -20,7 +21,7 @@ const DataProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
 	const [dateToday, setDateToday] = useState<TypeDateState>(null)
 	const [activeSwiperDate, setActiveSwiperDate] = useState<TypeDateState>(null)
 	const [activeIndex, setActiveIndex] = useState<number>(1)
-	const [dataList, setDataList] = useState<any[]>([])
+	const [dataList, setDataList] = useState<Data[] | undefined>(undefined);
 	const { fetchData } = useFetchData()
 
 	useEffect(() => {
@@ -33,7 +34,7 @@ const DataProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
 		const dates = getAdjacentDates(activeSwiperDate)
 
 		const fetchDateList = async () => {
-			const fetchedDataList = []
+			const fetchedDataList: Data[] = []
 			for (const item of dates) {
 				const data = await fetchData(item)
 				if (data) {
@@ -42,7 +43,6 @@ const DataProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
 			}
 			setDataList(fetchedDataList)
 		}
-
 		fetchDateList()
 		setActiveSwiperDate(activeSwiperDate)
 	}, [])

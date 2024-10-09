@@ -24,14 +24,14 @@ const Navigation: FC = () => {
   return (
     <>
       <NavigationContainer ref={navRef}>
-        <Stack.Navigator 
-          initialRouteName = "Front"
+        <Stack.Navigator
+          initialRouteName="Front"
           screenOptions={{
-          headerShown: false,
-          contentStyle: {
-            backgroundColor: '#fff'
-          }
-        }}>
+            headerShown: false,
+            contentStyle: {
+              backgroundColor: '#fff'
+            }
+          }}>
           {routes.map(route => (
             <Stack.Screen key={route.name} {...route} />
           ))}

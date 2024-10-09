@@ -1,6 +1,7 @@
+import { Data } from '@/types/fbdata.interface'
 import { Dispatch, SetStateAction } from 'react'
 
-export type TypeDateState = string | null
+export type TypeDateState = string | null | undefined
 export type TypeActiveIndex = number
 
 export interface IContext {
@@ -10,6 +11,6 @@ export interface IContext {
 	setActiveSwiperDate: Dispatch<SetStateAction<TypeDateState>>
 	activeIndex: TypeActiveIndex
 	setActiveIndex: Dispatch<SetStateAction<TypeActiveIndex>>
-	dataList: any[]
-	setDataList: (dataList: any[]) => void
+	dataList: Data[] | undefined
+	setDataList: Dispatch<SetStateAction<Data[] | undefined>>
 }

@@ -9,9 +9,15 @@ import Layout from '@/components/layout/Layout'
 import Loader from '@/components/ui/Loader'
 
 import { TypeRootStackParamList } from '@/navigation/navigation.types'
+import { useGetContextData } from '@/components/hooks/useGetContextData'
 
 const Home: FC = () => {
 	const { width } = Dimensions.get('window')
+	const {
+
+		activeIndex,
+
+	} = useGetContextData()
 	const slidesData = [
 		{
 			id: 4364,
@@ -38,14 +44,16 @@ const Home: FC = () => {
 		}
 	]
 
-	return  (
+	console.log('HactiveIndex',activeIndex)
+
+	return (
 		<Layout>
 			<SwiperFlatList
-				showPagination 
-        paginationActiveColor="#2b6e7e"
-        paginationDefaultColor='#b5e4ef'
-        paginationStyleItem={{ width: 7, height: 7 }}
-				data={slidesData} 
+				showPagination
+				paginationActiveColor="#2b6e7e"
+				paginationDefaultColor='#b5e4ef'
+				paginationStyleItem={{ width: 7, height: 7 }}
+				data={slidesData}
 				renderItem={({ item }) => (
 					<View
 						className={`justify-center items-center p-10`}
@@ -53,9 +61,7 @@ const Home: FC = () => {
 					>
 						<Text className='text-bold mb-5 text-lg'>
 							{item.date} (Хижри: {item.hijri_date})
-						</Text>
-						{/* <RenderHTML contentWidth={width} source={{ html: item.history }} />
-						<RenderHTML contentWidth={width} source={{ html: item.quote }} /> */}
+						</Text> 
 					</View>
 				)}
 			/>

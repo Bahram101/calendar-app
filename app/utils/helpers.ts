@@ -58,8 +58,11 @@ export const getAdjacentDates = (currentDate: string | null) => {
 	]
 }
 
-export const getShiftedDate = (date: string, day: number): string => {
-	const currentDate = new Date(date);
+export const getShiftedDate = (date: string | undefined, day: number): string => {
+	if (!date) {
+		throw new Error('Date cannot be undefined');
+	}
+	const currentDate =  new Date(date);
 	currentDate.setDate(currentDate.getDate() + day); 
 	return currentDate.toISOString().split('T')[0].toString();
 };
