@@ -25,7 +25,7 @@ const Navigation: FC = () => {
     <>
       <NavigationContainer ref={navRef}>
         <Stack.Navigator
-          initialRouteName="Front"
+          initialRouteName="Home"
           screenOptions={{
             headerShown: false,
             contentStyle: {

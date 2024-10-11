@@ -8,7 +8,7 @@ import {
 	useState
 } from 'react'
 
-import { useFetchData } from '@/components/hooks/useFetchData'
+import { useFetchData } from '@/hooks/useFetchData'
 
 import { getAdjacentDates } from '@/utils/helpers'
 

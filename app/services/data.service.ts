@@ -1,9 +1,9 @@
 import { request } from './api/request.api'
 
 export const DataService = {
-	async getData(date: string) {
+	async getData(date: string | null) {
 		return request({
-			url: `/datas?date=${date}`,
+			url: `/json/datas?date=${date}`,
 			method: 'GET',
 		})
 	}

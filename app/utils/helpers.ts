@@ -1,3 +1,5 @@
+import { typePrayNames } from '@/types/prayNames.interface'
+
 const hijriMonths = [
 	'Мухаррам',
 	'Сафар',
@@ -34,6 +36,22 @@ const miladiMonths = [
 	'Декабрь'
 ]
 
+export const prayNames = {
+	imsak: 'Имсак',
+	bamdat: 'Бамдат',
+	kun: 'Күн',
+	ishraq: 'Ишрак',
+	kerahat: 'Керахат',
+	besin: 'Бесін',
+	asriauual: 'Асри әууал',
+	ekindi: 'Екінді',
+	isfirar: 'Исфирар',
+	aqsham: 'Ақшам',
+	ishtibaq: 'Иштибак',
+	quptan: 'Құптан',
+	ishaisani: 'Ишаи сани'
+}
+
 export const convertToMiladiMonth = (month: string) => {
 	const monthName = miladiMonths[parseInt(month, 10) - 1]
 	return monthName
@@ -41,8 +59,8 @@ export const convertToMiladiMonth = (month: string) => {
 
 export const getAdjacentDates = (currentDate: string | null) => {
 	if (!currentDate) {
-    throw new Error("Invalid date");
-  }
+		throw new Error('Invalid date')
+	}
 	const date = new Date(currentDate)
 
 	const prevDate = new Date(date)
@@ -58,11 +76,14 @@ export const getAdjacentDates = (currentDate: string | null) => {
 	]
 }
 
-export const getShiftedDate = (date: string | undefined, day: number): string => {
+export const getShiftedDate = (
+	date: string | undefined,
+	day: number
+): string => {
 	if (!date) {
-		throw new Error('Date cannot be undefined');
+		throw new Error('Date cannot be undefined')
 	}
-	const currentDate =  new Date(date);
-	currentDate.setDate(currentDate.getDate() + day); 
-	return currentDate.toISOString().split('T')[0].toString();
-};
+	const currentDate = new Date(date)
+	currentDate.setDate(currentDate.getDate() + day)
+	return currentDate.toISOString().split('T')[0].toString()
+}

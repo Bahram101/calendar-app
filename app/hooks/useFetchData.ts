@@ -2,19 +2,15 @@ import { useState } from 'react'
 
 import { request } from '@/services/api/request.api'
 import { Data } from '@/types/fbdata.interface'
+import { DataService } from '@/services/data.service'
 
 export const useFetchData = () => {
 	const [isLoading, setIsLoading] = useState(false)
-	const [dataList, setDataList] = useState<Data[]>([])
 
 	const fetchData = async (date: string | null):Promise<Data | undefined> => {
 		setIsLoading(true)
 		try {
-			const response = await request({
-				url: `/datas?date=${date}`,
-				method: 'GET'
-			}) 
-			
+			const response = await DataService.getData(date) 			
 			setIsLoading(false)
 			return response as Data
 		} catch (error) {
@@ -22,10 +18,8 @@ export const useFetchData = () => {
 			setIsLoading(false)
 		}
 	}
-
+	
 	return {
-		dataList,
-		setDataList,
 		isLoading,
 		fetchData
 	}

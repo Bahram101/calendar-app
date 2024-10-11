@@ -1,6 +1,6 @@
 import React, { FC, memo } from 'react';
 import { Dimensions, Text, View } from 'react-native';
-import { useGetContextData } from '@/components/hooks/useGetContextData';
+import { useGetContextData } from '@/hooks/useGetContextData';
 import HTMLView from 'react-native-htmlview';
 import { Data } from '@/types/fbdata.interface';
 
