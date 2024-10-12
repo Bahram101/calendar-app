@@ -1,61 +1,62 @@
-import { typePrayNames } from '@/types/prayNames.interface'
-
 const hijriMonths = [
 	'Мухаррам',
 	'Сафар',
-	'Раби аль-авваль',
-	'Раби ас-сани',
-	'Джумада аль-уля',
-	'Джумада ас-сани',
-	'Раджаб',
-	'Шаабан',
-	'Рамадан',
-	'Шавваль',
-	'Зуль-Каада',
-	'Зуль-Хиджжа'
+	'Рабиул-әууал',
+	'Рабиул-ахир ',
+	'Жәмәзил-әууәл',
+	'Жәмәзис-сани',
+	'Ражап',
+	'Шабан',
+	'Рамазан',
+	'Шәууәл',
+	'Зул-қада',
+	'Зуль-хижжа'
 ]
 
-export const convertToHijriMonth = (hijriDate: string) => {
-	const [year, month, date] = hijriDate.split('-')
-	const monthName = hijriMonths[parseInt(month, 10) - 1]
-	const formattedDate = `${date} ${monthName} ${year}`
-	return formattedDate
-}
 const miladiMonths = [
-	'Январь',
-	'Февраль',
-	'Март',
-	'Апрель',
-	'Май',
-	'Июнь',
-	'Июль',
-	'Август',
-	'Сентябрь',
-	'Октябрь',
-	'Ноябрь',
-	'Декабрь'
+	'Қаңтар',
+	'Ақпан',
+	'Наурыз',
+	'Сәуір',
+	'Мамыр',
+	'Маусым',
+	'Шілде',
+	'Тамыз',
+	'Қыркүйек',
+	'Қазан',
+	'Қараша',
+	'Желтоқсан'
 ]
 
 export const prayNames = {
 	imsak: 'Имсак',
 	bamdat: 'Бамдат',
 	kun: 'Күн',
-	ishraq: 'Ишрак',
+	ishraq: 'Ишрақ',
 	kerahat: 'Керахат',
 	besin: 'Бесін',
-	asriauual: 'Асри әууал',
+	asriauual: 'Асри-әууәл',
 	ekindi: 'Екінді',
 	isfirar: 'Исфирар',
 	aqsham: 'Ақшам',
 	ishtibaq: 'Иштибак',
 	quptan: 'Құптан',
-	ishaisani: 'Ишаи сани'
+	ishaisani: 'Ишаи-сәни'
 }
 
-export const convertToMiladiMonth = (month: string) => {
-	const monthName = miladiMonths[parseInt(month, 10) - 1]
-	return monthName
+export const convertToMonth = (date: string, type: string) => {
+	const [year, month, day] = date.split('-')
+	const selectedMonth = parseInt(month, 10) - 1
+
+	const monthName =
+		type === 'hijri' ? hijriMonths[selectedMonth] : miladiMonths[selectedMonth]
+	return `${day} ${monthName} ${year}`
 }
+
+// export const convertToMiladiMonth = (month: string) => {
+// 	const monthName = miladiMonths[parseInt(month, 10) - 1]
+// 	return `${date} ${monthName} ${year}`
+// }
 
 export const getAdjacentDates = (currentDate: string | null) => {
 	if (!currentDate) {
