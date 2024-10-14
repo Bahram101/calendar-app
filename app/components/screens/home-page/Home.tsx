@@ -6,9 +6,9 @@ import Loader from '@/components/ui/Loader'
 
 import { useGetContextData } from '@/hooks/useGetContextData'
 import Swiper from 'react-native-swiper'
-import { useFetchNamaztimes } from '@/hooks/useFetchPrayTimes'
-import Namaztimes from './PrayTimes'
-import Search from './Search'
+import { useFetchPrayTimes } from '@/hooks/useFetchPrayTimes'
+import PrayTimes from './pray-times/PrayTimes'
+import Settings from './settings/Settings'
 
 
 
@@ -17,7 +17,7 @@ const Home: FC = () => {
 	const {
 		activeIndex,
 	} = useGetContextData()
-	const { isLoading, namaztimes, fetchNamaztimes } = useFetchNamaztimes()
+	const { isLoading, namaztimes, fetchNamaztimes } = useFetchPrayTimes()
 	const swiperHeight = height >= 852 ? height - 130 : height - 75
 
 	useEffect(() => {
@@ -32,8 +32,8 @@ const Home: FC = () => {
 		<Layout>
 			<View >
 				<Swiper showsButtons={false} loop={false} className='h-full' style={{ height: swiperHeight }}>
-					<Namaztimes isLoading={isLoading} namaztimes={namaztimes}/>
-					<Search />
+					<PrayTimes isLoading={isLoading} namaztimes={namaztimes}/>
+					<Settings />
 				</Swiper>
 			</View>
 		</Layout>

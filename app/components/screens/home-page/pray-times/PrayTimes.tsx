@@ -1,5 +1,3 @@
-import Loader from '@/components/ui/Loader'
-import { typePrayName } from '@/types/prayNames.interface'
 import { convertToMonth, prayNames } from '@/utils/helpers'
 import { FC, useEffect, useState } from 'react'
 import { Text, View, Dimensions } from 'react-native'
@@ -9,7 +7,7 @@ interface Props {
   namaztimes?: any
 }
 
-const Namaztimes: FC<Props> = ({ namaztimes }) => {
+const PrayTimes: FC<Props> = ({ namaztimes }) => {
   const { width } = Dimensions.get('window')
   const [prayInfo, setPrayInfo] = useState<any>()
 
@@ -67,4 +65,4 @@ const Namaztimes: FC<Props> = ({ namaztimes }) => {
   )
 }
 
-export default Namaztimes
+export default PrayTimes

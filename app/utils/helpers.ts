@@ -53,11 +53,6 @@ export const convertToMonth = (date: string, type: string) => {
 	return `${day} ${monthName} ${year}`
 }
 
-// export const convertToMiladiMonth = (month: string) => {
-// 	const monthName = miladiMonths[parseInt(month, 10) - 1]
-// 	return `${date} ${monthName} ${year}`
-// }
-
 export const getAdjacentDates = (currentDate: string | null) => {
 	if (!currentDate) {
 		throw new Error('Invalid date')

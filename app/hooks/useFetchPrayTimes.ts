@@ -1,18 +1,18 @@
 import { PrayTimesService } from "@/services/pray-times.service"
 import { useState } from "react"
 
-export const useFetchNamaztimes = (city: number | null = 8408)=>{
+export const useFetchPrayTimes = (city: number | null = 8408)=>{
   const [isLoading, setIsLoading] = useState(false)
-  const [namaztimes, setNamaztimes] = useState({})
+  const [namaztimes, setNamaztimes] = useState<any>(null)
 
 
   const fetchNamaztimes = async () =>{
     setIsLoading(true)
     try{
-      const res = await PrayTimesService.getData(city)
+      const res = await PrayTimesService.getPrayInfo(city)
       setIsLoading(false)
-      setNamaztimes(res.data)
-      return res.data
+      setNamaztimes(res)
+      return res
     }catch(e){
       console.log('Error:', e)
       setIsLoading(false)
