@@ -28,6 +28,15 @@ const miladiMonths = [
 	'Желтоқсан'
 ]
 
+export const extraPrayTimes = [
+	'ishraq',
+	'kerahat',
+	'asriauual',
+	'isfirar',
+	'ishtibaq',
+	'ishaisani'
+]
+
 export const prayNames = {
 	imsak: 'Имсак',
 	bamdat: 'Бамдат',

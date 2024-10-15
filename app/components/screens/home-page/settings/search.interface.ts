@@ -1,3 +1,5 @@
 export interface ISearchFormData {
-  searchTerm: number
+  searchTerm: string
 }
+
+// export interface 

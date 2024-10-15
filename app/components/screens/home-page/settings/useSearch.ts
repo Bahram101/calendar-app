@@ -5,13 +5,13 @@ import { PrayTimesService } from '@/services/pray-times.service'
 import { useSearchForm } from './useSearchForm'
 
 export const useSearch = () => {
-	const { searchTerm, debouncedSearch, control } = useSearchForm()
+	const { debouncedSearch, searchTerm, control } = useSearchForm()
 
-	const { data: city, isLoading } = useQuery({
+	const { data: cityList, isLoading } = useQuery({
 		queryKey: ['search city', debouncedSearch],
-		queryFn: () => PrayTimesService.getPrayInfo(debouncedSearch),
+		queryFn: () => PrayTimesService.getCityList(debouncedSearch),
 		enabled: !!debouncedSearch
 	})
 
-	return { city, isLoading, control, searchTerm }
+	return { cityList, isLoading, control, searchTerm }
 }

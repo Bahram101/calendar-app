@@ -1,4 +1,5 @@
-import { convertToMonth, prayNames } from '@/utils/helpers'
+import { useGetContextData } from '@/hooks/useGetContextData'
+import { convertToMonth, extraPrayTimes, prayNames } from '@/utils/helpers'
 import { FC, useEffect, useState } from 'react'
 import { Text, View, Dimensions } from 'react-native'
 
@@ -9,7 +10,10 @@ interface Props {
 
 const PrayTimes: FC<Props> = ({ namaztimes }) => {
   const { width } = Dimensions.get('window')
-  const [prayInfo, setPrayInfo] = useState<any>()
+  const {
+    prayInfo,
+    setPrayInfo
+  } = useGetContextData()
 
   useEffect(() => {
     if (namaztimes && namaztimes.praytimes) {
@@ -17,8 +21,7 @@ const PrayTimes: FC<Props> = ({ namaztimes }) => {
         .map(([key, val]) => ({
           key,
           val: val as string,
-          isActive: ['ishraq', 'kerahat', 'asriauual', 'isfirar', 'ishtibaq', 'ishaisani']
-            .includes(key) ? false : true
+          isActive: extraPrayTimes.includes(key) ? false : true
         }))
       const pageInfo = {
         slm_date: namaztimes.islamic_date,
@@ -30,10 +33,10 @@ const PrayTimes: FC<Props> = ({ namaztimes }) => {
     }
   }, [namaztimes])
 
-  console.log('prayInfo', JSON.stringify(prayInfo, null, 2));
+  // console.log('prayInfo', JSON.stringify(prayInfo, null, 2));
 
   return (
-    <View className='flex items-center h-full' style={{ padding: 50, width }}>
+    <View className='flex items-center h-full' style={{ padding: 30, width }}>
       <Text className='text-3xl text-primary font-bold uppercase mb-10'>{prayInfo?.cityName}</Text>
 
       <View className='mb-2 pt-6 w-60 items-center' style={{ borderTopWidth: 1, borderColor: '#DDDEE4' }}>
@@ -50,7 +53,7 @@ const PrayTimes: FC<Props> = ({ namaztimes }) => {
         {prayInfo?.prayTimes?.length > 0 ? (
           prayInfo.prayTimes.map((item: any) => (
             item.isActive && (
-              <View key={item.key} className='flex-row w-full justify-between pt-1 pb-1' 
+              <View key={item.key} className='flex-row w-full justify-between pt-1 pb-1'
                 style={{ borderBottomWidth: 1, borderColor: '#DDDEE4' }}>
                 <Text className='text-2xl'>{prayNames[item.key as keyof typeof prayNames]}</Text>
                 <Text className='text-2xl'>{item.val}</Text>

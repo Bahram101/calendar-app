@@ -5,7 +5,6 @@ export const useFetchPrayTimes = (city: number | null = 8408)=>{
   const [isLoading, setIsLoading] = useState(false)
   const [namaztimes, setNamaztimes] = useState<any>(null)
 
-
   const fetchNamaztimes = async () =>{
     setIsLoading(true)
     try{

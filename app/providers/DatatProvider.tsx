@@ -22,6 +22,7 @@ const DataProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
 	const [activeSwiperDate, setActiveSwiperDate] = useState<TypeDateState>(null)
 	const [activeIndex, setActiveIndex] = useState<number>(1)
 	const [dataList, setDataList] = useState<Data[] | undefined>(undefined);
+	const [prayInfo, setPrayInfo] = useState<any>()
 	const { fetchData } = useFetchData()
 
 	useEffect(() => {
@@ -56,9 +57,11 @@ const DataProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
 			activeIndex,
 			setActiveIndex,
 			dataList,
-			setDataList
+			setDataList,
+			prayInfo,
+			setPrayInfo
 		}),
-		[dateToday, activeSwiperDate, activeIndex, dataList]
+		[dateToday, activeSwiperDate, activeIndex, dataList, prayInfo]
 	)
 
 	return <DataContext.Provider value={value}>{children}</DataContext.Provider>

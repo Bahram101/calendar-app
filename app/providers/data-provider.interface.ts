@@ -13,4 +13,7 @@ export interface IContext {
 	setActiveIndex: Dispatch<SetStateAction<TypeActiveIndex>>
 	dataList: Data[] | undefined
 	setDataList: Dispatch<SetStateAction<Data[] | undefined>>
+	prayInfo: any
+	setPrayInfo: any,
+
 }

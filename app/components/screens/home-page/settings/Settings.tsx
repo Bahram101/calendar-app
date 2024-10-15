@@ -7,8 +7,8 @@ import AdditionalPrayTimes from './AdditionalPrayTimes'
 const Settings: FC = () => {
   const { width } = Dimensions.get('window')
   return (
-    <View className='h-full items-center' style={{ padding: 50, width }}>
-      <Text className='text-3xl text-primary font-bold uppercase mb-10'>Баптау</Text>
+    <View className='h-full items-center' style={{ padding: 30, width }}>
+      {/* <Text className='text-3xl text-gray-500 font-bold mb-5'>Баптау</Text> */}
       <Search/>
       <AdditionalPrayTimes/>
     </View>

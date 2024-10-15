@@ -6,11 +6,9 @@ import Loader from '@/components/ui/Loader'
 
 import { useGetContextData } from '@/hooks/useGetContextData'
 import Swiper from 'react-native-swiper'
-import { useFetchPrayTimes } from '@/hooks/useFetchPrayTimes'
+import { useFetchPrayTimes } from '@/components/screens/home-page/pray-times/useFetchPrayTimes'
 import PrayTimes from './pray-times/PrayTimes'
 import Settings from './settings/Settings'
-
-
 
 const Home: FC = () => {
 	const { height } = Dimensions.get('window')
