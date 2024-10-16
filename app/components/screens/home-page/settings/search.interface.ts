@@ -2,4 +2,7 @@ export interface ISearchFormData {
   searchTerm: string
 }
 
-// export interface 
+export interface ISelectFormData{
+  cityId: number
+}
+ 

@@ -54,7 +54,7 @@ const BackPage: FC = () => {
 		[dataList, isFetching]
 	)
 
-	console.log('BBactiveIndex', activeIndex)
+	// console.log('BBactiveIndex', activeIndex)
 
 	return dataList && dataList.length < 3 ? (
 		<Loader />

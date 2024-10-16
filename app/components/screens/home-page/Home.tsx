@@ -14,8 +14,9 @@ const Home: FC = () => {
 	const { height } = Dimensions.get('window')
 	const {
 		activeIndex,
-	} = useGetContextData()
-	const { isLoading, namaztimes, fetchNamaztimes } = useFetchPrayTimes()
+		cityId,  
+	} = useGetContextData() 
+	const { isLoading, namaztimes, fetchNamaztimes } = useFetchPrayTimes(cityId)
 	const swiperHeight = height >= 852 ? height - 130 : height - 75
 
 	useEffect(() => {

@@ -10,7 +10,7 @@ export const PrayTimesService = {
 		})
 	},
 
-	async getPrayInfo(cityId: number | null) {
+	async getPrayInfo(cityId: number | undefined) {
 		return request({
 			url: `/json/times?city_id=${cityId}`,
 			method: 'GET'

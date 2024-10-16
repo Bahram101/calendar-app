@@ -22,26 +22,23 @@ const AdditionalPrayTimes: FC = () => {
       }))
    }
 
-   // console.log('ppp', prayInfo?.prayTimes)
-   
-  console.log('prayInfo', JSON.stringify(prayInfo?.prayTimes, null, 2));
-
    return (
-      <View className='mt-5'>
+      <View className='flex-1 justify-center'>
          {prayInfo?.prayTimes?.length > 0 ? (
             prayInfo?.prayTimes?.map((item: any) => (
                extraPrayTimes.includes(item.key) && (
                   <View key={item.key} className='flex-row w-full justify-between pt-1 pb-1'
                      style={{ borderBottomWidth: 1, borderColor: '#DDDEE4' }}>
                      <Text className='text-2xl'>{prayNames[item.key as keyof typeof prayNames]}</Text>
-                     <ToggleSwitch
-                        isOn={item.isActive}
-                        onColor="#2b6e7e"
-                        offColor="#DDDEE4"
-                        labelStyle={{ color: "black", fontWeight: "900" }}
-                        size="medium"
-                        onToggle={isOn => handleToggle(item.key, isOn)}
-                     />
+                     <View style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }} className='flex justify-center pr-1'>
+                        <ToggleSwitch
+                           isOn={item.isActive}
+                           onColor="#2b6e7e"
+                           offColor="#DDDEE4"
+                           labelStyle={{ color: "black", fontWeight: "900" }}
+                           onToggle={isOn => handleToggle(item.key, isOn)}
+                        />
+                     </View>
                   </View>
                )
             ))

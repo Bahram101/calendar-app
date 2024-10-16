@@ -9,7 +9,12 @@ export const useSearch = () => {
 
 	const { data: cityList, isLoading } = useQuery({
 		queryKey: ['search city', debouncedSearch],
-		queryFn: () => PrayTimesService.getCityList(debouncedSearch),
+    queryFn: () => {
+      if (debouncedSearch.length >= 3) {
+        return PrayTimesService.getCityList(debouncedSearch)
+      }
+      return [];  
+    },
 		enabled: !!debouncedSearch
 	})
 

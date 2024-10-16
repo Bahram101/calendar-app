@@ -1,7 +1,7 @@
 import { PrayTimesService } from "@/services/pray-times.service"
 import { useState } from "react"
 
-export const useFetchPrayTimes = (city: number | null = 8408)=>{
+export const useFetchPrayTimes = (city: number | undefined)=>{
   const [isLoading, setIsLoading] = useState(false)
   const [namaztimes, setNamaztimes] = useState<any>(null)
 

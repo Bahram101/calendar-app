@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction } from 'react'
 
 export type TypeDateState = string | null | undefined
 export type TypeActiveIndex = number
+export type TypeCityId = number | undefined
 
 export interface IContext {
 	dateToday: TypeDateState
@@ -14,6 +15,7 @@ export interface IContext {
 	dataList: Data[] | undefined
 	setDataList: Dispatch<SetStateAction<Data[] | undefined>>
 	prayInfo: any
-	setPrayInfo: any,
-
+	setPrayInfo: any
+	cityId: TypeCityId
+	setCityId: Dispatch<SetStateAction<TypeCityId>>
 }

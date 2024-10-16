@@ -12,7 +12,7 @@ import { useFetchData } from '@/hooks/useFetchData'
 
 import { getAdjacentDates } from '@/utils/helpers'
 
-import { IContext, TypeDateState } from './data-provider.interface'
+import { IContext, TypeCityId, TypeDateState } from './data-provider.interface'
 import { Data } from '@/types/fbdata.interface'
 
 export const DataContext = createContext({} as IContext)
@@ -23,6 +23,7 @@ const DataProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
 	const [activeIndex, setActiveIndex] = useState<number>(1)
 	const [dataList, setDataList] = useState<Data[] | undefined>(undefined);
 	const [prayInfo, setPrayInfo] = useState<any>()
+	const [cityId, setCityId] = useState<TypeCityId>(8408)
 	const { fetchData } = useFetchData()
 
 	useEffect(() => {
@@ -48,6 +49,8 @@ const DataProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
 		setActiveSwiperDate(activeSwiperDate)
 	}, [])
 
+	console.log('cityIdCTX', cityId)
+
 	const value = useMemo(
 		() => ({
 			dateToday,
@@ -59,7 +62,9 @@ const DataProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
 			dataList,
 			setDataList,
 			prayInfo,
-			setPrayInfo
+			setPrayInfo,
+			cityId,
+			setCityId
 		}),
 		[dateToday, activeSwiperDate, activeIndex, dataList, prayInfo]
 	)
