@@ -1,23 +1,13 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { PrayTimesService } from '@/services/pray-times.service'
-import { FC } from 'react'
+import { PrayTimesService } from '@/services/pray-times.service' 
 
-interface IProps{
-  cityId: number | undefined
-}
-
-export const useGetPrayInfo: FC<IProps> = ({ cityId }) => {
-
-  console.log('useGetPrayInfo')
-  
-	const { data: cityInfo, isLoading:isLoading2 } = useQuery({
+export const useGetPrayInfo = (cityId : number | undefined | null) => {
+	const { data: cityInfo, isLoading:isLoading } = useQuery({
 		queryKey: ['get city info', cityId],
 		queryFn: () => PrayTimesService.getPrayInfo(cityId),
 		enabled: !!cityId
 	})
 
-  console.log('cityInfo',cityInfo)
-
-	return { cityInfo, isLoading2 }
+	return { cityInfo, isLoading }
 }

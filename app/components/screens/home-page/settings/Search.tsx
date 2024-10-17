@@ -1,41 +1,20 @@
 import Field from '@/components/ui/field/Field'
-import { FC, useEffect, useState } from 'react'
+import { FC } from 'react'
 import { FlatList, Text, TouchableOpacity, View } from 'react-native'
 import { useSearch } from './useSearch'
 import { ISearchFormData } from './search.interface'
-import Loader from '@/components/ui/Loader'
-import { useGetPrayInfo } from './useGetPrayInfo'
-import { useGetContextData } from '@/hooks/useGetContextData'
+import Loader from '@/components/ui/Loader' 
+import { useGetContextData } from '@/hooks/useGetContextData' 
 
-const Search: FC = () => {
-
+const Search: FC = () => { 
   const { cityList, isLoading, control, searchTerm } = useSearch()
   const {
-    activeIndex,
-    cityId,
     setCityId,
-    setPrayInfo
   } = useGetContextData()
 
   const handlePrayInfo = (id: number) => {
-    console.log('id',id)
-    setCityId(id);
+    setCityId(id); 
   }
-
-  // const { cityId } = useGetContextData()
-  const { cityInfo, isLoading2 } = useGetPrayInfo(cityId)
-
-  // Сохраняем данные о городе в контекст
-  if (cityInfo) {
-    setPrayInfo(cityInfo)
-  }
-
-  useEffect(()=>{
-
-  }, [])
-
-  console.log('cityInfo', cityInfo)
-  console.log('cityId', cityId)
 
   return (
     <View className='mt-12 w-full'>
@@ -65,7 +44,10 @@ const Search: FC = () => {
                   item.children.length > 0 && item.children.map((cityItem: any) => (
                     <TouchableOpacity
                       key={cityItem.id}
-                      onPress={() => handlePrayInfo(cityItem.id)}
+                      onPress={() => {
+                        console.log('cityItem', cityItem.id)
+                        handlePrayInfo(cityItem.id)}
+                      }
                       className='px-6 py-2 w-full border-b border-gray-200 bg-white'
                     >
                       <Text className='text-lg'>{cityItem.text}</Text>

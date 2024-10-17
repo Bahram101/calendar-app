@@ -33,7 +33,6 @@ const PrayTimes: FC<Props> = ({ namaztimes }) => {
     }
   }, [namaztimes])
 
-  // console.log('prayInfo', JSON.stringify(prayInfo, null, 2));
 
   return (
     <View className='flex items-center h-full' style={{ padding: 30, width }}>

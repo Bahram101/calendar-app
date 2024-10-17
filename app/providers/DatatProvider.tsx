@@ -49,8 +49,6 @@ const DataProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
 		setActiveSwiperDate(activeSwiperDate)
 	}, [])
 
-	console.log('cityIdCTX', cityId)
-
 	const value = useMemo(
 		() => ({
 			dateToday,
@@ -66,7 +64,7 @@ const DataProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
 			cityId,
 			setCityId
 		}),
-		[dateToday, activeSwiperDate, activeIndex, dataList, prayInfo]
+		[dateToday, activeSwiperDate, activeIndex, dataList, prayInfo, cityId]
 	)
 
 	return <DataContext.Provider value={value}>{children}</DataContext.Provider>

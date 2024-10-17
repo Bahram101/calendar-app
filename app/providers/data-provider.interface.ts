@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction } from 'react'
 
 export type TypeDateState = string | null | undefined
 export type TypeActiveIndex = number
-export type TypeCityId = number | undefined
+export type TypeCityId = number | undefined | null
 
 export interface IContext {
 	dateToday: TypeDateState

@@ -1,3 +1,2 @@
-export const API_URL = process.env.SERVER_URL
-
-// export const API_URL = `${SERVER_URL}/json`
+export const SERVER = process.env.SERVER
+export const SERVER_N = process.env.SERVER_N
