@@ -9,7 +9,7 @@ import Swiper from 'react-native-swiper'
 import { useFetchPrayTimes } from '@/components/screens/home-page/pray-times/useFetchPrayTimes'
 import PrayTimes from './pray-times/PrayTimes'
 import Settings from './settings/Settings'
-import { useGetPrayInfo } from './settings/useGetPrayInfo'
+import cn from 'clsx'
 
 const Home: FC = () => {
 	const { height } = Dimensions.get('window')
@@ -17,7 +17,6 @@ const Home: FC = () => {
 		cityId,  
 	} = useGetContextData() 
 	const { isLoading, namaztimes, fetchNamaztimes } = useFetchPrayTimes(cityId)
-	// const {isLoading, cityInfo} = useGetPrayInfo(cityId)
 	const swiperHeight = height >= 852 ? height - 130 : height - 75
 
 	useEffect(() => {
@@ -31,8 +30,8 @@ const Home: FC = () => {
 	return (
 		<Layout>
 			<View >
-				<Swiper showsButtons={false} loop={false} className='h-full' style={{ height: swiperHeight }}>
-					<PrayTimes isLoading={isLoading} namaztimes={namaztimes}/>
+				<Swiper showsButtons={false} loop={false} style={{height: swiperHeight}} >
+					<PrayTimes namaztimes={namaztimes}/>
 					<Settings />
 				</Swiper>
 			</View>

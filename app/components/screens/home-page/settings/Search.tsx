@@ -3,17 +3,18 @@ import { FC } from 'react'
 import { FlatList, Text, TouchableOpacity, View } from 'react-native'
 import { useSearch } from './useSearch'
 import { ISearchFormData } from './search.interface'
-import Loader from '@/components/ui/Loader' 
-import { useGetContextData } from '@/hooks/useGetContextData' 
+import Loader from '@/components/ui/Loader'
+import { useGetContextData } from '@/hooks/useGetContextData'
+import cn from 'clsx'
 
-const Search: FC = () => { 
+const Search: FC = () => {
   const { cityList, isLoading, control, searchTerm } = useSearch()
   const {
     setCityId,
   } = useGetContextData()
 
   const handlePrayInfo = (id: number) => {
-    setCityId(id); 
+    setCityId(id);
   }
 
   return (
@@ -32,23 +33,27 @@ const Search: FC = () => {
         )}
       </View>
       {searchTerm?.length >= 2 && cityList?.results?.length > 0 && (
-        <View className='bg-red-100 border border-gray-300 rounded-lg mt-2'>
+        <View className='bg-red-100 border border-gray-300 
+          rounded-lg absolute w-full top-[60px] z-10 shadow-lg'>
           <FlatList
             className='rounded-md bg-white'
             data={cityList?.results}
             keyExtractor={(item) => item.text?.toString()}
+            style={{ maxHeight: 200 }}
+            showsVerticalScrollIndicator={true}
             renderItem={({ item }) => (
               <View className='bg-white '>
                 <Text className='text-lg p-1 pl-2 bg-slate-300'>{item.text}</Text>
                 {
-                  item.children.length > 0 && item.children.map((cityItem: any) => (
+                  item.children.length > 0 && item.children.map((cityItem: any, index: number) => (
                     <TouchableOpacity
                       key={cityItem.id}
                       onPress={() => {
-                        console.log('cityItem', cityItem.id)
-                        handlePrayInfo(cityItem.id)}
+                        handlePrayInfo(cityItem.id)
                       }
-                      className='px-6 py-2 w-full border-b border-gray-200 bg-white'
+                      }
+                      className={cn('px-6 py-2 w-full border-gray-200 bg-white', 
+                        item.children.length - 1 !== index && 'border-b')}
                     >
                       <Text className='text-lg'>{cityItem.text}</Text>
                     </TouchableOpacity>))

@@ -1,7 +1,8 @@
+import { TypeCityId } from "@/providers/data-provider.interface"
 import { PrayTimesService } from "@/services/pray-times.service"
 import { useState } from "react"
 
-export const useFetchPrayTimes = (city: number | undefined | null)=>{
+export const useFetchPrayTimes = (city: TypeCityId)=>{
   const [isLoading, setIsLoading] = useState(false)
   const [namaztimes, setNamaztimes] = useState<any>(null)
 
