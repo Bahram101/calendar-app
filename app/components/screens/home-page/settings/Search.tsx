@@ -1,6 +1,6 @@
 import Field from '@/components/ui/field/Field'
 import { FC } from 'react'
-import { FlatList, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { useSearch } from './useSearch'
 import { ISearchFormData } from './search.interface'
 import Loader from '@/components/ui/Loader'
@@ -33,26 +33,32 @@ const Search: FC = () => {
         )}
       </View>
       {searchTerm?.length >= 2 && cityList?.results?.length > 0 && (
-        <View className='bg-red-100 border border-gray-300 
-          rounded-lg absolute w-full top-[60px] z-10 shadow-lg'>
+        <View className='mt-1 border border-gray-300 
+           absolute w-full top-[60px] z-10' style={{
+            elevation: 10,
+            borderRadius:8,
+            overflow: 'hidden',
+            // shadowColor: '#000',
+            // shadowOffset: { width: 0, height: 2 },
+            // shadowOpacity: 0.5,
+            // shadowRadius: 7,
+          }}>
           <FlatList
-            className='rounded-md bg-white'
+            className='bg-white'
+            style={{ maxHeight: 200 }}
             data={cityList?.results}
             keyExtractor={(item) => item.text?.toString()}
-            style={{ maxHeight: 200 }}
             showsVerticalScrollIndicator={true}
+            nestedScrollEnabled={true}
             renderItem={({ item }) => (
-              <View className='bg-white '>
+              <View>
                 <Text className='text-lg p-1 pl-2 bg-slate-300'>{item.text}</Text>
                 {
                   item.children.length > 0 && item.children.map((cityItem: any, index: number) => (
                     <TouchableOpacity
                       key={cityItem.id}
-                      onPress={() => {
-                        handlePrayInfo(cityItem.id)
-                      }
-                      }
-                      className={cn('px-6 py-2 w-full border-gray-200 bg-white', 
+                      onPress={() => handlePrayInfo(cityItem.id)}
+                      className={cn('px-6 py-2 w-full border-gray-200 bg-white',
                         item.children.length - 1 !== index && 'border-b')}
                     >
                       <Text className='text-lg'>{cityItem.text}</Text>

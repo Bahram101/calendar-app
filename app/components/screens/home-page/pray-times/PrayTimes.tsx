@@ -51,7 +51,8 @@ const PrayTimes: FC<Props> = ({ namaztimes }) => {
       <View className='pb-6 w-60 mb-8 items-center border-b border-gray-200' >
         <Text className='uppercase'>{prayInfo?.date && convertToMonth(prayInfo?.date, 'miladi')}</Text>
       </View>
-      <View className='mt-5 mb-10 flex-1' >
+
+      <View className='mt-5 mb-10 flex-1'>
         <ScrollView
           scrollEnabled={true}
           nestedScrollEnabled={true}>
