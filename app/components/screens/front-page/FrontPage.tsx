@@ -57,8 +57,6 @@ const FrontPage: FC = memo(() => {
 		return <Loader />
 	}
 
-	console.log('FFactiveIndex', activeIndex)
-
 	return (
 		<Layout className='px-5'>
 			<SwiperFlatList

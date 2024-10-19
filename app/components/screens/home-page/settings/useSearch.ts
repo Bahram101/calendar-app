@@ -2,18 +2,18 @@ import { useQuery } from '@tanstack/react-query'
 
 import { PrayTimesService } from '@/services/pray-times.service'
 
-import { useSearchForm } from './useSearchForm'
+import { useSearchForm } from './useSearchForm' 
 
 export const useSearch = () => {
 	const { debouncedSearch, searchTerm, control } = useSearchForm()
 
 	const { data: cityList, isLoading } = useQuery({
 		queryKey: ['search city', debouncedSearch],
-    queryFn: () => {
+    queryFn: async () => {
       if (debouncedSearch.length >= 3) {
-        return PrayTimesService.getCityList(debouncedSearch)
+        return await PrayTimesService.getCityList(debouncedSearch)
       }
-      return [];  
+      return { results: [] }; 
     },
 		enabled: !!debouncedSearch
 	})

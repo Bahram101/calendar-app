@@ -14,6 +14,7 @@ import { getAdjacentDates } from '@/utils/helpers'
 
 import { IContext, TypeCityId, TypeDateState } from './data-provider.interface'
 import { Data } from '@/types/fbdata.interface'
+import { TypePrayInfo } from '@/types/prayInfo.interface'
 
 export const DataContext = createContext({} as IContext)
 
@@ -22,7 +23,7 @@ const DataProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
 	const [activeSwiperDate, setActiveSwiperDate] = useState<TypeDateState>(null)
 	const [activeIndex, setActiveIndex] = useState<number>(1)
 	const [dataList, setDataList] = useState<Data[] | undefined>(undefined);
-	const [prayInfo, setPrayInfo] = useState<any>()
+	const [prayInfo, setPrayInfo] = useState<TypePrayInfo | undefined>(undefined)
 	const [cityId, setCityId] = useState<TypeCityId>(8408)
 	const { fetchData } = useFetchData()
 
@@ -66,6 +67,8 @@ const DataProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
 		}),
 		[dateToday, activeSwiperDate, activeIndex, dataList, prayInfo, cityId]
 	)
+
+	console.log('activeIndex', JSON.stringify(activeIndex, null, 2))
 
 	return <DataContext.Provider value={value}>{children}</DataContext.Provider>
 }

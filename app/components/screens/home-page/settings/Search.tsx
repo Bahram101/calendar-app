@@ -1,6 +1,6 @@
 import Field from '@/components/ui/field/Field'
-import { FC, useCallback } from 'react'
-import { FlatList, Keyboard, KeyboardAvoidingView, Platform, ScrollView, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import { FC } from 'react'
+import { FlatList, Text, TouchableOpacity, View } from 'react-native'
 import { useSearch } from './useSearch'
 import { ISearchFormData } from './search.interface'
 import Loader from '@/components/ui/Loader'
@@ -16,10 +16,6 @@ const Search: FC = () => {
   const handlePrayInfo = (id: number) => {
     setCityId(id);
   }
-
-  const handleScroll = useCallback(() => {
-    Keyboard.dismiss();
-  }, []);
 
   return (
     <View className='mt-12 w-full'>
@@ -41,11 +37,7 @@ const Search: FC = () => {
            absolute w-full top-[60px] z-10' style={{
             elevation: 10,
             borderRadius: 8,
-            overflow: 'hidden',
-            // shadowColor: '#000',
-            // shadowOffset: { width: 0, height: 2 },
-            // shadowOpacity: 0.5,
-            // shadowRadius: 7,
+            overflow: 'hidden'
           }}>
           <FlatList
             className='bg-white'
@@ -54,7 +46,6 @@ const Search: FC = () => {
             keyExtractor={(item) => item.text?.toString()}
             showsVerticalScrollIndicator={true}
             nestedScrollEnabled={true}
-            onScrollBeginDrag={handleScroll}
             renderItem={({ item }) => (
               <View>
                 <Text className='text-lg p-1 pl-2 bg-slate-300'>{item.text}</Text>

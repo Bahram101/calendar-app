@@ -1,17 +1,15 @@
-import Loader from '@/components/ui/Loader'
 import { useGetContextData } from '@/hooks/useGetContextData'
 import { convertToMonth, extraPrayTimes, prayNames } from '@/utils/helpers'
-import { FC, useEffect, useState } from 'react'
-import { Text, View, Dimensions, ScrollView } from 'react-native'
+import { FC, useEffect } from 'react'
+import { Text, View, ScrollView } from 'react-native'
 import cn from 'clsx'
-import { typePrayName } from '@/types/prayNames.interface'
+import { TypePrayName } from '@/types/prayInfo.interface'
 
 interface Props {
   namaztimes?: any
 }
 
 const PrayTimes: FC<Props> = ({ namaztimes }) => {
-  const { width } = Dimensions.get('window')
   const {
     prayInfo,
     setPrayInfo
@@ -35,10 +33,7 @@ const PrayTimes: FC<Props> = ({ namaztimes }) => {
     }
   }, [namaztimes])
 
-  console.log('asdf', JSON.stringify(prayInfo, null, 2))
-
-
-  return prayInfo?.prayTimes?.length > 0 && (
+  return prayInfo && prayInfo?.prayTimes?.length > 0 && (
     <View className={cn('flex items-center h-full p-[30px]')}>
       <Text className='text-3xl text-primary font-bold uppercase mb-10'>{prayInfo?.cityName}</Text>
 
@@ -56,7 +51,7 @@ const PrayTimes: FC<Props> = ({ namaztimes }) => {
         <ScrollView
           scrollEnabled={true}
           nestedScrollEnabled={true}>
-          {prayInfo.prayTimes.map((item: typePrayName) => (
+          {prayInfo.prayTimes.map((item: TypePrayName) => (
             item.isActive && (
               <View key={item.key} className={
                 cn('flex-row w-full justify-between pt-1 pb-1 border-b border-gray-200')}

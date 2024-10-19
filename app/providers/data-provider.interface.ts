@@ -1,4 +1,5 @@
 import { Data } from '@/types/fbdata.interface'
+import { TypePrayInfo } from '@/types/prayInfo.interface'
 import { Dispatch, SetStateAction } from 'react'
 
 export type TypeDateState = string | null | undefined
@@ -14,8 +15,8 @@ export interface IContext {
 	setActiveIndex: Dispatch<SetStateAction<TypeActiveIndex>>
 	dataList: Data[] | undefined
 	setDataList: Dispatch<SetStateAction<Data[] | undefined>>
-	prayInfo: any
-	setPrayInfo: any
+	prayInfo?: TypePrayInfo
+	setPrayInfo: Dispatch<SetStateAction<TypePrayInfo | undefined>>
 	cityId: TypeCityId
 	setCityId: Dispatch<SetStateAction<TypeCityId>>
 }

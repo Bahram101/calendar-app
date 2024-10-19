@@ -5,10 +5,11 @@ import { TypeCityId } from '@/providers/data-provider.interface'
 export const PrayTimesService = {
 	async getCityList(cityName: string | null, serverType: boolean = false) {
 		const apiInstance = serverType ? instance_n : instance
-		return request(apiInstance, {
+		const response = request(apiInstance, {
 			url: `/json/search?q=${cityName}`,
 			method: 'GET'
 		})
+		return response || []
 	},
 
 	async getPrayInfo(

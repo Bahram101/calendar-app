@@ -1,6 +1,5 @@
 import { useState } from 'react'
 
-import { request } from '@/services/api/request.api'
 import { Data } from '@/types/fbdata.interface'
 import { DataService } from '@/services/data.service'
 
