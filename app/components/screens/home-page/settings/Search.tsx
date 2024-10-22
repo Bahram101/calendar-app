@@ -13,31 +13,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 const Search: FC = () => {
   const { cityList, isLoading, control, searchTerm } = useSearch()
   const {
-    prayInfo,
-    cityId,
     setCityId,
-    setPrayInfo
   } = useGetContextData()
-  const { prayTimes, fetchPrayTimes} = useFetchPrayTimes(cityId)
-
-	useEffect(() => {
-    const getD = async () => {
-      try { 
-        const res = await getPrayInfoFromStorage()
-        setCityId(res.cityId)
-        // setPrayInfo(res);
-        console.log('res.cityId',res.cityId)
-        console.log('cityId',cityId)
-        if (res && res.cityId === cityId) {
-          setPrayInfo(res);          
-        }
-      } catch (error) {
-        console.error('Ошибка при обновлении:', error);
-      }
-    };
-  
-    getD();
-  }, [cityId]);
 
   const handlePrayInfo = (id: number) => {
     setCityId(id);

@@ -17,27 +17,60 @@ const Home: FC = () => {
 	const swiperHeight = height >= 852 ? height - 130 : height - 75
 	const {
 		prayInfo,
+		setCityId,
 		setPrayInfo,
 		cityId
 	} = useGetContextData()
 	const { prayTimes, fetchPrayTimes, isLoading } = useFetchPrayTimes(cityId)
 
+	const fetchDatas = async () =>{
+		
+	}
+
 	useEffect(() => {
 		const getInfo = async () => {
 			const res = await getPrayInfoFromStorage()
-			if (res) {
+			if (Object.entries(res).length > 0) { 
 				setPrayInfo(res)
 			}else{
-				const fetchedPrayTimes = await fetchPrayTimes();          
+				setCityId(8408)
+				const fetchedPrayTimes = await fetchPrayTimes(); 
 				const processedPrayTimes = processPrayTimes(fetchedPrayTimes);
-				if (processedPrayTimes) { 
-					await savePrayInfoToStorage(processedPrayTimes); 
+				if (processedPrayTimes) {
+					await savePrayInfoToStorage(processedPrayTimes);
 					setPrayInfo(processedPrayTimes);
 				}
 			}
 		}
 		getInfo()
 	}, [])
+
+	useEffect(() => {
+		const getD = async () => {
+			try {
+				const res = await getPrayInfoFromStorage()
+				setCityId(res.cityId)
+				setPrayInfo(res);
+				if (res && res.cityId === cityId) {
+					setPrayInfo(res);
+				} else if (cityId && res.cityId !== cityId) {
+					const fetchedPrayTimes = await fetchPrayTimes();
+					const processedPrayTimes = processPrayTimes(fetchedPrayTimes);
+					if (processedPrayTimes) {
+						await savePrayInfoToStorage(processedPrayTimes);
+						setPrayInfo(processedPrayTimes);
+					}
+				}
+			} catch (error) {
+				console.error('Error in fetch data:', error);
+			}
+		};
+
+		getD();
+	}, [cityId]);
+	
+
+
 
 	if (isLoading) {
 		return <Loader />
