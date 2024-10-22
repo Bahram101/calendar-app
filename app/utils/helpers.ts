@@ -1,3 +1,7 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
+import { TypePrayInfo } from '@/types/prayInfo.interface'
+
 const hijriMonths = [
 	'Мухаррам',
 	'Сафар',
@@ -91,4 +95,47 @@ export const getShiftedDate = (
 	const currentDate = new Date(date)
 	currentDate.setDate(currentDate.getDate() + day)
 	return currentDate.toISOString().split('T')[0].toString()
+}
+
+export const processPrayTimes = (prayTimes: any) => {
+	if (!prayTimes || !prayTimes.praytimes) return null
+
+	const res = Object.entries(prayTimes.praytimes).map(([key, val]) => ({
+		key,
+		val: val as string,
+		isActive: extraPrayTimes.includes(key) ? false : true
+	}))
+	return {
+		slm_date: prayTimes.islamic_date,
+		date: prayTimes.date,
+		cityName: prayTimes.attributes.CityName,
+		cityId: prayTimes.attributes.ID,
+		prayTimes: res
+	}
+}
+
+export enum EnumAsyncStorage {
+	PRAY_INFO = 'prayInfo'
+}
+
+export const getPrayInfoFromStorage = async () => {
+	try {
+		return JSON.parse(
+			(await AsyncStorage.getItem(EnumAsyncStorage.PRAY_INFO)) || '{}'
+		)
+	} catch (e) {
+		return null
+	}
+}
+
+export const savePrayInfoToStorage = async (data: TypePrayInfo) => {
+	try {
+		await AsyncStorage.setItem(EnumAsyncStorage.PRAY_INFO, JSON.stringify(data))
+	} catch (e) {}
+}
+
+export const removePrayInfoFromStorage = async ()=>{
+	try{
+		await AsyncStorage.removeItem(EnumAsyncStorage.PRAY_INFO)
+	}catch(e){}
 }

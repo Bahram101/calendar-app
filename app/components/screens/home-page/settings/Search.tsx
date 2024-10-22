@@ -1,17 +1,43 @@
 import Field from '@/components/ui/field/Field'
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { FlatList, Text, TouchableOpacity, View } from 'react-native'
 import { useSearch } from './useSearch'
 import { ISearchFormData } from './search.interface'
 import Loader from '@/components/ui/Loader'
 import { useGetContextData } from '@/hooks/useGetContextData'
 import cn from 'clsx'
+import { useFetchPrayTimes } from '../pray-times/useFetchPrayTimes'
+import { EnumAsyncStorage, getPrayInfoFromStorage, processPrayTimes, removePrayInfoFromStorage, savePrayInfoToStorage } from '@/utils/helpers'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Search: FC = () => {
   const { cityList, isLoading, control, searchTerm } = useSearch()
   const {
+    prayInfo,
+    cityId,
     setCityId,
+    setPrayInfo
   } = useGetContextData()
+  const { prayTimes, fetchPrayTimes} = useFetchPrayTimes(cityId)
+
+	useEffect(() => {
+    const getD = async () => {
+      try { 
+        const res = await getPrayInfoFromStorage()
+        setCityId(res.cityId)
+        // setPrayInfo(res);
+        console.log('res.cityId',res.cityId)
+        console.log('cityId',cityId)
+        if (res && res.cityId === cityId) {
+          setPrayInfo(res);          
+        }
+      } catch (error) {
+        console.error('Ошибка при обновлении:', error);
+      }
+    };
+  
+    getD();
+  }, [cityId]);
 
   const handlePrayInfo = (id: number) => {
     setCityId(id);

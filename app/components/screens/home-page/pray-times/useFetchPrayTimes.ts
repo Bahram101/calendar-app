@@ -4,14 +4,14 @@ import { useState } from "react"
 
 export const useFetchPrayTimes = (city: TypeCityId)=>{
   const [isLoading, setIsLoading] = useState(false)
-  const [namaztimes, setNamaztimes] = useState<any>(null)
+  const [prayTimes, setPrayTimes] = useState<any>(null)
 
-  const fetchNamaztimes = async () =>{
+  const fetchPrayTimes = async () =>{
     setIsLoading(true)
     try{
       const res = await PrayTimesService.getPrayInfo(city, true)
       setIsLoading(false)
-      setNamaztimes(res)
+      setPrayTimes(res)
       return res
     }catch(e){
       console.log('Error:', e)
@@ -21,8 +21,8 @@ export const useFetchPrayTimes = (city: TypeCityId)=>{
 
   return {
     isLoading,
-    namaztimes,
-    fetchNamaztimes
+    prayTimes,
+    fetchPrayTimes
   }
 
 }

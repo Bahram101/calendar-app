@@ -10,65 +10,44 @@ import { useFetchPrayTimes } from '@/components/screens/home-page/pray-times/use
 import PrayTimes from './pray-times/PrayTimes'
 import Settings from './settings/Settings'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { extraPrayTimes, getPrayInfoFromStorage, processPrayTimes, removePrayInfoFromStorage, savePrayInfoToStorage } from '@/utils/helpers'
 
 const Home: FC = () => {
 	const { height } = Dimensions.get('window')
-	const {
-		cityId,
-	} = useGetContextData()
-	const { isLoading, namaztimes, fetchNamaztimes } = useFetchPrayTimes(cityId)
-
-	const [storedNamaztimes, setStoredNamaztimes] = useState<any>(null)
 	const swiperHeight = height >= 852 ? height - 130 : height - 75
+	const {
+		prayInfo,
+		setPrayInfo,
+		cityId
+	} = useGetContextData()
+	const { prayTimes, fetchPrayTimes, isLoading } = useFetchPrayTimes(cityId)
 
 	useEffect(() => {
-		const loadStoredNamaztimes = async () => {
-			try {
-				const storedData = await AsyncStorage.getItem(`prayInfo_${cityId}`)
-				if (storedData) {
-					setStoredNamaztimes(JSON.parse(storedData))
-				} else {
-					// Если данных нет, получаем их с сервера
-					await fetchNamaztimes()
+		const getInfo = async () => {
+			const res = await getPrayInfoFromStorage()
+			if (res) {
+				setPrayInfo(res)
+			}else{
+				const fetchedPrayTimes = await fetchPrayTimes();          
+				const processedPrayTimes = processPrayTimes(fetchedPrayTimes);
+				if (processedPrayTimes) { 
+					await savePrayInfoToStorage(processedPrayTimes); 
+					setPrayInfo(processedPrayTimes);
 				}
-			} catch (error) {
-				console.error('Failed to load data from AsyncStorage:', error)
 			}
 		}
+		getInfo()
+	}, [])
 
-		loadStoredNamaztimes()
-	}, [cityId]) // Убираем fetchNamaztimes из зависимостей
-
-	useEffect(() => {
-		const saveNamaztimes = async () => {
-			try {
-				if (namaztimes) {
-					await AsyncStorage.setItem(`prayInfo_${cityId}`, JSON.stringify(namaztimes))
-					setStoredNamaztimes(namaztimes) // Сохраняем и отображаем последние данные
-				}
-			} catch (error) {
-				console.error('Failed to save data to AsyncStorage:', error)
-			}
-		}
-
-		if (namaztimes) {
-			saveNamaztimes()
-		}
-	}, [namaztimes, cityId])
-
-	if (isLoading && !storedNamaztimes) {
+	if (isLoading) {
 		return <Loader />
 	}
-
-	const displayedNamaztimes = namaztimes || storedNamaztimes
-
-	console.log('storedNamaztimes',storedNamaztimes)
 
 	return (
 		<Layout>
 			<View >
 				<Swiper showsButtons={false} loop={false} style={{ height: swiperHeight }} >
-					<PrayTimes namaztimes={displayedNamaztimes} />
+					<PrayTimes />
 					<Settings />
 				</Swiper>
 			</View>
