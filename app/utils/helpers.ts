@@ -138,4 +138,10 @@ export const removePrayInfoFromStorage = async ()=>{
 	try{
 		await AsyncStorage.removeItem(EnumAsyncStorage.PRAY_INFO)
 	}catch(e){}
+} 
+
+export const minTwoDigits = (val:string)=>{
+	const [hours, minutes] = val.split(':');
+  const formattedHours = ('0' + hours).slice(-2);  
+  return `${formattedHours}:${minutes}`.split(':');
 }

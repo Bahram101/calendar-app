@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect } from 'react'
 import { Dimensions, View } from 'react-native'
 
 import Layout from '@/components/layout/Layout'
@@ -9,44 +9,42 @@ import Swiper from 'react-native-swiper'
 import { useFetchPrayTimes } from '@/components/screens/home-page/pray-times/useFetchPrayTimes'
 import PrayTimes from './pray-times/PrayTimes'
 import Settings from './settings/Settings'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { extraPrayTimes, getPrayInfoFromStorage, processPrayTimes, removePrayInfoFromStorage, savePrayInfoToStorage } from '@/utils/helpers'
+import { getPrayInfoFromStorage, processPrayTimes, savePrayInfoToStorage } from '@/utils/helpers'
 
 const Home: FC = () => {
 	const { height } = Dimensions.get('window')
 	const swiperHeight = height >= 852 ? height - 130 : height - 75
 	const {
-		prayInfo,
 		setCityId,
 		setPrayInfo,
 		cityId
 	} = useGetContextData()
-	const { prayTimes, fetchPrayTimes, isLoading } = useFetchPrayTimes(cityId)
+	const { fetchPrayTimes, isLoading } = useFetchPrayTimes(cityId)
 
-	const fetchDatas = async () =>{
-		
+	const fetchAndProcessPrayTimes = async () => {
+		const fetchedPrayTimes = await fetchPrayTimes()
+		const processedPrayTimes = processPrayTimes(fetchedPrayTimes)
+		if (processedPrayTimes) {
+			await savePrayInfoToStorage(processedPrayTimes)
+			setPrayInfo(processedPrayTimes)
+		}
 	}
 
 	useEffect(() => {
-		const getInfo = async () => {
+		const loadPrayInfoFromStorage = async () => {
 			const res = await getPrayInfoFromStorage()
-			if (Object.entries(res).length > 0) { 
+			if (Object.entries(res).length > 0) {
 				setPrayInfo(res)
-			}else{
+			} else {
 				setCityId(8408)
-				const fetchedPrayTimes = await fetchPrayTimes(); 
-				const processedPrayTimes = processPrayTimes(fetchedPrayTimes);
-				if (processedPrayTimes) {
-					await savePrayInfoToStorage(processedPrayTimes);
-					setPrayInfo(processedPrayTimes);
-				}
+				await fetchAndProcessPrayTimes()
 			}
 		}
-		getInfo()
+		loadPrayInfoFromStorage()
 	}, [])
 
 	useEffect(() => {
-		const getD = async () => {
+		const fetchAndUpdatePrayTimes = async () => {
 			try {
 				const res = await getPrayInfoFromStorage()
 				setCityId(res.cityId)
@@ -54,21 +52,16 @@ const Home: FC = () => {
 				if (res && res.cityId === cityId) {
 					setPrayInfo(res);
 				} else if (cityId && res.cityId !== cityId) {
-					const fetchedPrayTimes = await fetchPrayTimes();
-					const processedPrayTimes = processPrayTimes(fetchedPrayTimes);
-					if (processedPrayTimes) {
-						await savePrayInfoToStorage(processedPrayTimes);
-						setPrayInfo(processedPrayTimes);
-					}
+					await fetchAndProcessPrayTimes()
 				}
 			} catch (error) {
 				console.error('Error in fetch data:', error);
 			}
 		};
 
-		getD();
+		fetchAndUpdatePrayTimes();
 	}, [cityId]);
-	
+
 
 
 

@@ -10,15 +10,11 @@ import {
 
 import { useFetchData } from '@/hooks/useFetchData'
 
-import { getAdjacentDates, getPrayInfoFromStorage } from '@/utils/helpers'
+import { getAdjacentDates } from '@/utils/helpers'
 
 import { IContext, TypeCityId, TypeDateState } from './data-provider.interface'
 import { Data } from '@/types/fbdata.interface'
-import { TypePrayInfo } from '@/types/prayInfo.interface'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useFetchPrayTimes } from '@/components/screens/home-page/pray-times/useFetchPrayTimes'
-import { PrayTimesService } from '@/services/pray-times.service'
-
+import { TypePrayInfo } from '@/types/prayInfo.interface' 
 export const DataContext = createContext({} as IContext)
 
 const DataProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
@@ -70,9 +66,7 @@ const DataProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
 			setCityId
 		}),
 		[dateToday, activeSwiperDate, activeIndex, dataList, prayInfo, cityId]
-	)
-
-	// console.log('activeIndex', JSON.stringify(activeIndex, null, 2))
+	) 
 
 	return <DataContext.Provider value={value}>{children}</DataContext.Provider>
 }

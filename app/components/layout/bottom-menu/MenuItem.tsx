@@ -14,7 +14,7 @@ const MenuItem: FC<IMenuItemPrps> = ({ item, nav, currentRoute }) => {
    const isActive = currentRoute === item.path
 
    return (
-      <Pressable onPress={() => nav(item.path)} className='items-center w-[25%]' >
+      <Pressable onPress={() => nav(item.path)} className='items-center w-[33%]' >
          <Feather name={item.icon} size={30} color={isActive ? '#2b6e7e' : '#0006'} />
       </Pressable>
    )

@@ -8,5 +8,7 @@ export interface TypePrayInfo {
 	slm_date: string
 	date: string
 	cityName: string
+  cityId: string
 	prayTimes: TypePrayName[]
 }
+ 

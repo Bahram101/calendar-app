@@ -13,8 +13,8 @@ export const menuItems: IMenuItem[] = [
 		icon: 'file-text',
 		path: 'Back'
 	},
-	{ 
-    icon: 'menu',
-    path: 'Menu' 
-  }
+	// { 
+  //   icon: 'menu',
+  //   path: 'Menu' 
+  // }
 ]

@@ -1,13 +1,12 @@
 import { useGetContextData } from '@/hooks/useGetContextData'
-import { convertToMonth, extraPrayTimes, prayNames } from '@/utils/helpers'
-import { FC, useEffect } from 'react'
+import { convertToMonth, minTwoDigits, prayNames } from '@/utils/helpers'
 import { Text, View, ScrollView } from 'react-native'
 import cn from 'clsx'
 import { TypePrayName } from '@/types/prayInfo.interface'
 
-const PrayTimes = ( ) => {
+const PrayTimes = () => {
   const {
-    prayInfo, 
+    prayInfo,
   } = useGetContextData()
 
   return prayInfo && prayInfo?.prayTimes?.length > 0 && (
@@ -31,7 +30,13 @@ const PrayTimes = ( ) => {
                 cn('flex-row w-full justify-between pt-1 pb-1 border-b border-gray-200')}
               >
                 <Text className='text-2xl'>{prayNames[item.key as keyof typeof prayNames]}</Text>
-                <Text className='text-2xl'>{item.val}</Text>
+                <View className=' w-[80px] flex-row  '>
+                  <Text className='text-2xl flex-1'>
+                    {minTwoDigits(item.val)[0]}
+                  </Text>
+                  <Text className='text-2xl'> : </Text>
+                  <Text className='text-2xl flex-1 text-right'>{minTwoDigits(item.val)[1]} </Text>
+                </View>
               </View>
             )
           ))}
