@@ -62,9 +62,6 @@ const Home: FC = () => {
 		fetchAndUpdatePrayTimes();
 	}, [cityId]);
 
-
-
-
 	if (isLoading) {
 		return <Loader />
 	}
@@ -72,7 +69,15 @@ const Home: FC = () => {
 	return (
 		<Layout>
 			<View >
-				<Swiper showsButtons={false} loop={false} style={{ height: swiperHeight }} >
+				<Swiper
+					showsButtons={false}
+					loop={false}
+					style={{ height: swiperHeight }}
+					dot={
+						<View style={{ backgroundColor: '#0004', width: 8, height: 8, borderRadius: 4, margin: 4 }} />
+					}
+					activeDot={<View style={{ backgroundColor: '#2b6e7e', width: 8, height: 8, borderRadius: 5, margin: 4 }} />}
+				>
 					<PrayTimes />
 					<Settings />
 				</Swiper>

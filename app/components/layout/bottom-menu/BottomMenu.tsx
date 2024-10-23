@@ -19,7 +19,7 @@ const BottomMenu: FC<IButtonMenu> = props => {
 
 	return (
 		<View
-			className='pt-3 pb-5 px-2 flex-row justify-between items-center w-full border-t border-t-solid border-t-[#bbb] bg-white'
+			className='pt-2 pb-5 px-2 flex-row justify-between items-center w-full border-t border-t-solid border-t-[#bbb] bg-white'
 			style={{ paddingBottom: isIOS ? bottom : isAndroid ? bottom + 12 : 0 }}
 		>
 			{menuItems.map(item => (

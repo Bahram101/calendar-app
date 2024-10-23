@@ -30,11 +30,11 @@ const PrayTimes = () => {
                 cn('flex-row w-full justify-between pt-1 pb-1 border-b border-gray-200')}
               >
                 <Text className='text-2xl'>{prayNames[item.key as keyof typeof prayNames]}</Text>
-                <View className=' w-[80px] flex-row  '>
+                <View className='w-[72px] flex-row'>
                   <Text className='text-2xl flex-1'>
                     {minTwoDigits(item.val)[0]}
                   </Text>
-                  <Text className='text-2xl'> : </Text>
+                  <Text className='text-2xl'>:</Text>
                   <Text className='text-2xl flex-1 text-right'>{minTwoDigits(item.val)[1]} </Text>
                 </View>
               </View>

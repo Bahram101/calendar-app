@@ -1,5 +1,5 @@
 import { useGetContextData } from '@/hooks/useGetContextData'
-import { TypePrayInfo, TypePrayName } from '@/types/prayInfo.interface'
+import { TypePrayName } from '@/types/prayInfo.interface'
 import { extraPrayTimes, prayNames, savePrayInfoToStorage } from '@/utils/helpers'
 import { FC } from 'react'
 import { ScrollView, Text, View } from 'react-native'
@@ -39,7 +39,7 @@ const AdditionalPrayTimes: FC = () => {
 							scrollEnabled={true}
 							nestedScrollEnabled={true}>
 							<View className='flex-row w-full justify-between pt-1 pb-1 border-b border-gray-200'>
-								<Text className='text-2xl'>{prayNames[item.key as keyof typeof prayNames]}</Text>
+								<Text className='text-2xl' >{prayNames[item.key as keyof typeof prayNames]}</Text>
 								<View style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }} className='flex justify-center pr-2'>
 									<ToggleSwitch
 										isOn={item.isActive}
