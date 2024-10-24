@@ -1,62 +1,21 @@
-import { FC, useCallback, useEffect, useState } from 'react'
-import { Dimensions, Text, View } from 'react-native'
+import { FC } from 'react'
 import SwiperFlatList from 'react-native-swiper-flatlist'
 
-import { useFetchData } from '@/hooks/useFetchData'
 import { useGetContextData } from '@/hooks/useGetContextData'
 import Layout from '@/components/layout/Layout'
 import Loader from '@/components/ui/Loader'
-import { getShiftedDate } from '@/utils/helpers'
 import SwiperItem from './SwiperItem'
-import { Data } from '@/types/fbdata.interface'
+import { useHandleChange } from '@/hooks/useHandleChange'
 
-const BackPage: FC = () => { 
-	const {
-		setActiveSwiperDate,
-		activeIndex,
-		setActiveIndex,
-		dataList,
-		setDataList,
-	} = useGetContextData()
-	const { fetchData } = useFetchData()
-	const [isFetching, setIsFetching] = useState(false)
+const BackPage: FC = () => {
+	const { activeIndex, dataList } = useGetContextData();
+	const { handleChange } = useHandleChange()
 
-	const handleChange = useCallback(
-		async ({ index, prevIndex }: { index: number, prevIndex: number }) => {
-			if (!isFetching && index > prevIndex) {
-				setIsFetching(true)
+	if (dataList && dataList.length < 3) {
+		return <Loader />
+	}
 
-				const currentActiveDate = dataList && dataList[index]?.front.date
-				const nextDate = getShiftedDate(currentActiveDate, 1)
-
-				if (currentActiveDate) {
-					setActiveSwiperDate(currentActiveDate)
-				}
-
-				const nextDateDataExists = dataList?.some(
-					item => item?.front?.date === nextDate
-				)
-
-				if (!nextDateDataExists) {
-					const newData = await fetchData(nextDate)
-					if (newData) {
-						setDataList((prev:Data[] | undefined) => [...prev ?? [], newData])
-					}
-				}
-				setActiveIndex(index)
-				setIsFetching(false)
-			} else if (index < prevIndex) {
-				const currentActiveDate = dataList && dataList[index]?.front.date
-				setActiveSwiperDate(currentActiveDate)
-				setActiveIndex(index)
-			}
-		},
-		[dataList, isFetching]
-	)
-
-	return dataList && dataList.length < 3 ? (
-		<Loader />
-	) : (
+	return (
 		<Layout className='px-5'>
 			<SwiperFlatList
 				index={activeIndex}
