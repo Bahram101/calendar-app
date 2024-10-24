@@ -5,11 +5,11 @@ import Layout from '@/components/layout/Layout'
 import Loader from '@/components/ui/Loader'
 
 import SwiperItem from './SwiperItem'
-import { useHandleChange } from '@/hooks/useHandleChange'
+import { useSwipeChange } from '@/hooks/useSwipeChange'
 
 const FrontPage: FC = memo(() => {
 	const { activeIndex, dataList } = useGetContextData();
-	const { handleChange } = useHandleChange()
+	const { handleChange } = useSwipeChange()
 
 	if (dataList && dataList.length < 3) {
 		return <Loader />

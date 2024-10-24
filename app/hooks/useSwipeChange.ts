@@ -7,10 +7,9 @@ import { getShiftedDate } from '@/utils/helpers'
 import { useFetchData } from './useFetchData'
 import { useGetContextData } from './useGetContextData'
 
-export const useHandleChange = () => {
+export const useSwipeChange = () => {
 	const {
-		setActiveSwiperDate,
-		activeIndex,
+		setActiveSwiperDate, 
 		setActiveIndex,
 		dataList,
 		setDataList

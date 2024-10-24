@@ -32,9 +32,9 @@ const Home: FC = () => {
 
 	useEffect(() => {
 		const loadPrayInfoFromStorage = async () => {
-			const res = await getPrayInfoFromStorage()
-			if (Object.entries(res).length > 0) {
-				setPrayInfo(res)
+			const storedPrayInfo = await getPrayInfoFromStorage()
+			if (Object.entries(storedPrayInfo).length > 0) {
+				setPrayInfo(storedPrayInfo)
 			} else {
 				setCityId(8408)
 				await fetchAndProcessPrayTimes()
@@ -46,16 +46,15 @@ const Home: FC = () => {
 	useEffect(() => {
 		const fetchAndUpdatePrayTimes = async () => {
 			try {
-				const res = await getPrayInfoFromStorage()
-				setCityId(res.cityId)
-				setPrayInfo(res);
-				if (res && res.cityId === cityId) {
-					setPrayInfo(res);
-				} else if (cityId && res.cityId !== cityId) {
-					await fetchAndProcessPrayTimes()
+				const storedPrayInfo = await getPrayInfoFromStorage();	
+				if (storedPrayInfo && storedPrayInfo.cityId === cityId) {
+					setPrayInfo(storedPrayInfo);
+				} else if (cityId && (!storedPrayInfo || storedPrayInfo.cityId !== cityId)) {
+					setCityId(storedPrayInfo.cityId);
+					await fetchAndProcessPrayTimes();
 				}
 			} catch (error) {
-				console.error('Error in fetch data:', error);
+				console.error('Error fetching data:', error);
 			}
 		};
 
