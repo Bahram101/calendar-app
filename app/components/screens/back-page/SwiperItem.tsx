@@ -1,6 +1,5 @@
-import React, { FC, memo } from 'react';
-import { Dimensions, Text, View } from 'react-native';
-import { useGetContextData } from '@/hooks/useGetContextData';
+import { FC, memo } from 'react';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import HTMLView from 'react-native-htmlview';
 import { Data } from '@/types/fbdata.interface';
 
@@ -35,13 +34,7 @@ const SwiperItem: FC<{ item: Data }> = memo(({ item }) => {
 						<View className='text-justify'>
 							<HTMLView
 								value={backItem?.content?.replace(/\n/g, '')}
-								stylesheet={{
-									p: {
-										textAlign: 'justify',
-										marginBottom: -15,
-										lineHeight: 18
-									},
-								}}
+								stylesheet={htmlStyles}
 							/>
 						</View>
 					</View>
@@ -50,5 +43,14 @@ const SwiperItem: FC<{ item: Data }> = memo(({ item }) => {
 		</View>
 	)
 });
+
+const htmlStyles = StyleSheet.create({
+	p: {
+		textAlign: 'justify',
+		marginBottom: -15,
+		lineHeight: 20,
+		fontSize: 15
+	},
+})
 
 export default SwiperItem;

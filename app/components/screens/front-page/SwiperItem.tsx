@@ -1,5 +1,5 @@
 import { FC, memo } from 'react';
-import { Dimensions, Text, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import { useGetContextData } from '@/hooks/useGetContextData';
 import HTMLView from 'react-native-htmlview';
 import { Data } from '@/types/fbdata.interface';
@@ -41,16 +41,18 @@ const SwiperItem: FC<{ item: Data }> = memo(({ item }) => {
 			<View className='w-full text-center'>
 				<HTMLView
 					value={item?.front.quote.replace(/\n/g, '')}
-					stylesheet={{
-						p: {
-							textAlign: 'center',
-							marginBottom: -17,
-						},
-					}}
+					stylesheet={htmlStyles}
 				/>
 			</View>
 		</View>
 	);
 });
+
+const htmlStyles = StyleSheet.create({
+	p: {
+		textAlign: 'center',
+		marginBottom: -17, 		
+	},
+})
 
 export default SwiperItem;

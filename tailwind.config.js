@@ -4,9 +4,19 @@ module.exports = {
 	theme: {
 		extend: {
       colors: {
-        // primary: 'var(--color-primary)', // переменная из CSS
-        // secondary: 'var(--color-secondary)',
-        primary: '#2b6e7e', // кастомное значение цвета
+        primary: '#2b6e7e',   
+        primaryLight: '#bfe4ed' 
+      },
+      fontFamily: {
+        pthin: ["Poppins-Thin", "sans-serif"],
+        pextralight: ["Poppins-ExtraLight", "sans-serif"],
+        plight: ["Poppins-Light", "sans-serif"],
+        pregular: ["Poppins-Regular", "sans-serif"],
+        pmedium: ["Poppins-Medium", "sans-serif"],
+        psemibold: ["Poppins-SemiBold", "sans-serif"],
+        pbold: ["Poppins-Bold", "sans-serif"],
+        pextrabold: ["Poppins-ExtraBold", "sans-serif"],
+        pblack: ["Poppins-Black", "sans-serif"],
       },
     },
 	},

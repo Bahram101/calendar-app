@@ -13,7 +13,7 @@ import { getPrayInfoFromStorage, processPrayTimes, savePrayInfoToStorage } from 
 
 const Home: FC = () => {
 	const { height } = Dimensions.get('window')
-	const swiperHeight = height >= 852 ? height - 130 : height - 75
+	const swiperHeight = height >= 852 ? height - 145 : height - 90
 	const {
 		setCityId,
 		setPrayInfo,
@@ -75,7 +75,7 @@ const Home: FC = () => {
 					dot={
 						<View style={{ backgroundColor: '#0004', width: 8, height: 8, borderRadius: 4, margin: 4 }} />
 					}
-					activeDot={<View style={{ backgroundColor: '#2b6e7e', width: 8, height: 8, borderRadius: 5, margin: 4 }} />}
+					activeDot={<View style={{ backgroundColor: '#54a4b7', width: 8, height: 8, borderRadius: 5, margin: 4 }} />}
 				>
 					<PrayTimes />
 					<Settings />

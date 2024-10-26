@@ -6,9 +6,8 @@ import { routes } from './routes'
 import ButtomMenu from '@/components/layout/bottom-menu/BottomMenu'
 
 const Stack = createNativeStackNavigator<TypeRootStackParamList>()
-
+ 
 const Navigation: FC = () => {
-
   const [currentRoute, setCurrentRoute] = useState<string | undefined>(undefined)
   const navRef = useNavigationContainerRef()
 

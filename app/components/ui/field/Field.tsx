@@ -23,7 +23,7 @@ const Field = <T extends Record<string, any>>({
 				<>
 					<View
 						className={cn(
-							'bg-white w-full border rounded-lg pb-4 pt-2.5 px-4 my-1.5',
+							'bg-white w-full border rounded-3xl pb-4 pt-3 px-4 my-1.5',
 							error ? 'border-red' : 'border-gray-400'
 						)}
 					>
@@ -32,7 +32,7 @@ const Field = <T extends Record<string, any>>({
 							onChangeText={onChange}
 							onBlur={onBlur}
 							value={(value || '').toString()}
-							className='text-black text-base'
+							className={cn('text-black text-base', className)}
 							placeholderTextColor='#6A6A6A'
 							{...rest}
 						/>

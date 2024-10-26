@@ -4,6 +4,7 @@ import { extraPrayTimes, prayNames, savePrayInfoToStorage } from '@/utils/helper
 import { FC } from 'react'
 import { ScrollView, Text, View } from 'react-native'
 import ToggleSwitch from 'toggle-switch-react-native'
+import cn from 'clsx'
 
 const AdditionalPrayTimes: FC = () => {
 	const {
@@ -20,40 +21,40 @@ const AdditionalPrayTimes: FC = () => {
 					prayTimes: prevState.prayTimes.map((item: TypePrayName) =>
 						item.key === key ? { ...item, isActive: isOn } : item
 					),
-				}; 
-				savePrayInfoToStorage(updatedInfo);	
+				};
+				savePrayInfoToStorage(updatedInfo);
 				return updatedInfo;
 			});
 		};
-	
+
 		prayTimesToggle();
 	};
 
+	const addPrayList = prayInfo?.prayTimes?.filter((item: TypePrayName) =>
+		extraPrayTimes.includes(item.key)) 
+
 	return (
 		<View className='flex-1 justify-center absolute bottom-1/3 -z-10'>
-			{prayInfo && prayInfo?.prayTimes?.length > 0 ? (
-				prayInfo?.prayTimes?.map((item: TypePrayName) => (
-					extraPrayTimes.includes(item.key) && (
-						<ScrollView
-							key={item.key}
-							scrollEnabled={true}
-							nestedScrollEnabled={true}>
-							<View className='flex-row w-full justify-between pt-1 pb-1 border-b border-gray-200'>
-								<Text className='text-2xl' >{prayNames[item.key as keyof typeof prayNames]}</Text>
-								<View style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }} className='flex justify-center pr-2'>
-									<ToggleSwitch
-										isOn={item.isActive}
-										onColor="#2b6e7e"
-										offColor="#DDDEE4"
-										labelStyle={{ color: "black", fontWeight: "900" }}
-										onToggle={isOn => handleToggle(item.key, isOn)}
-									/>
-								</View>
-							</View>
-						</ScrollView>
-					)
-				))
-			) : (
+			{addPrayList && addPrayList.length > 0 ? addPrayList?.map((item: TypePrayName) => (
+				<ScrollView
+					key={item.key}
+					scrollEnabled={true}
+					nestedScrollEnabled={true}>
+					<View className={cn('flex-row w-full justify-between pt-1 pb-1 border-gray-200',
+						item.key !== addPrayList[addPrayList.length - 1].key && 'border-b')}>
+						<Text className='text-2xl' >{prayNames[item.key as keyof typeof prayNames]}</Text>
+						<View style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }} className='flex justify-center pr-2'>
+							<ToggleSwitch
+								isOn={item.isActive}
+								onColor="#2b6e7e"
+								offColor="#DDDEE4"
+								labelStyle={{ color: "black", fontWeight: "900" }}
+								onToggle={isOn => handleToggle(item.key, isOn)}
+							/>
+						</View>
+					</View>
+				</ScrollView>
+			)) : (
 				<Text>No data available</Text>
 			)}
 		</View>

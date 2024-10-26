@@ -1,4 +1,3 @@
-import * as SplashScreen from 'expo-splash-screen'
 import {
 	FC,
 	PropsWithChildren,
@@ -14,7 +13,7 @@ import { getAdjacentDates } from '@/utils/helpers'
 
 import { IContext, TypeCityId, TypeDateState } from './data-provider.interface'
 import { Data } from '@/types/fbdata.interface'
-import { TypePrayInfo } from '@/types/prayInfo.interface' 
+import { TypePrayInfo } from '@/types/prayInfo.interface'
 export const DataContext = createContext({} as IContext)
 
 const DataProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
@@ -66,7 +65,7 @@ const DataProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
 			setCityId
 		}),
 		[dateToday, activeSwiperDate, activeIndex, dataList, prayInfo, cityId]
-	) 
+	)
 
 	return <DataContext.Provider value={value}>{children}</DataContext.Provider>
 }

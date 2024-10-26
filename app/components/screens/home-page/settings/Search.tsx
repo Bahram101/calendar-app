@@ -3,10 +3,11 @@ import { FC } from 'react'
 import { FlatList, Text, TouchableOpacity, View } from 'react-native'
 import { useSearch } from './useSearch'
 import { ISearchFormData } from './search.interface'
+import { Feather } from '@expo/vector-icons'
 import Loader from '@/components/ui/Loader'
 import { useGetContextData } from '@/hooks/useGetContextData'
-import cn from 'clsx' 
- 
+import cn from 'clsx'
+
 
 const Search: FC = () => {
   const { cityList, isLoading, control, searchTerm } = useSearch()
@@ -20,12 +21,16 @@ const Search: FC = () => {
 
   return (
     <View className='mt-12 w-full'>
-      <View className=' relative'>
+      <View className='relative'>
+        <View className='absolute z-10 top-[24px] left-3 opacity-50' >
+          <Feather name='search' size={20} />
+        </View>
         <Field<ISearchFormData>
           placeholder='Қала аты...'
           control={control}
           name='searchTerm'
           keyboardType='web-search'
+          className='pl-5'
         />
         {isLoading && (
           <View className='absolute right-3 top-5' >
