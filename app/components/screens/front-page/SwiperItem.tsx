@@ -16,13 +16,13 @@ const SwiperItem: FC<{ item: Data }> = memo(({ item }) => {
 
 	return (
 		<View key={item.front.id} className={`items-center pt-8 px-5`} style={[{ width }]}>
-			<Text className='text-xl font-bold uppercase selft-start'>
+			<Text className='text-xl font-bold uppercase selft-start text-blackL'>
 				{item?.front.hijri_date}
 			</Text>
 			<Text className={`font-bold mb-3 text-[180px] ${textColor}`}>
 				{item?.front.day}
 			</Text>
-			<Text className='text-2xl font-bold uppercase'>
+			<Text className='text-2xl font-bold uppercase text-blackL'>
 				{item?.front.year_month}
 			</Text>
 			<Text className={`uppercase text-2xl font-bold mb-[40px] ${textColor}`}>
@@ -50,6 +50,7 @@ const SwiperItem: FC<{ item: Data }> = memo(({ item }) => {
 
 const htmlStyles = StyleSheet.create({
 	p: {
+		color: '#2E4158',
 		textAlign: 'center',
 		marginBottom: -17, 		
 	},

@@ -9,6 +9,7 @@ import { Feather } from '@expo/vector-icons'
 const PrayTimes = () => {
   const {
     prayInfo,
+    dateToday
   } = useGetContextData()
 
   const [currentTime, setCurrentTime] = useState('')
@@ -25,9 +26,6 @@ const PrayTimes = () => {
     const timer = setInterval(updateCurrentTime, 1000)
     return () => clearInterval(timer)
   }, [])
-
-  console.log('activePrayTimes', activePrayTimes)
-
 
   return prayInfo && prayInfo?.prayTimes?.length > 0 && (
     <View className={cn('flex items-center h-full p-[30px]')}>
@@ -64,7 +62,7 @@ const PrayTimes = () => {
                   isCurrentTime ? 'bg-primaryLight text-white' : ''
                 )}
               >
-                <Text className='text-2xl text-[#2E4158]'>{prayNames[item.key as keyof typeof prayNames]}</Text>
+                <Text className='text-2xl text-blackL'>{prayNames[item.key as keyof typeof prayNames]}</Text>
                 <View className='w-[72px] flex-row'>
                   <Text className='text-2xl flex-1 text-[#2E4158]'>
                     {minTwoDigits(item.val)[0]}

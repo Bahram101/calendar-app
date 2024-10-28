@@ -25,7 +25,7 @@ const SwiperItem: FC<{ item: Data }> = memo(({ item }) => {
 			{item.back.map((backItem: any) => {
 				return (
 					<View key={backItem.id} className='mb-5'>
-						<Text className='font-bold uppercase text-center mb-1'>
+						<Text className='font-bold uppercase text-center text-blackL mb-1'>
 							{backItem.category}
 						</Text>
 						<Text className='font-bold mb-3 uppercase text-primary text-center text-lg'>
@@ -46,6 +46,7 @@ const SwiperItem: FC<{ item: Data }> = memo(({ item }) => {
 
 const htmlStyles = StyleSheet.create({
 	p: {
+		color: '#2E4158',
 		textAlign: 'justify',
 		marginBottom: -15,
 		lineHeight: 20,

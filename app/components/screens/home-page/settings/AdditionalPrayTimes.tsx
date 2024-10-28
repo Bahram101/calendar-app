@@ -42,7 +42,7 @@ const AdditionalPrayTimes: FC = () => {
 					nestedScrollEnabled={true}>
 					<View className={cn('flex-row w-full justify-between pt-1 pb-1 border-gray-200',
 						item.key !== addPrayList[addPrayList.length - 1].key && 'border-b')}>
-						<Text className='text-2xl' >{prayNames[item.key as keyof typeof prayNames]}</Text>
+						<Text className='text-2xl text-blackL' >{prayNames[item.key as keyof typeof prayNames]}</Text>
 						<View style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }} className='flex justify-center pr-2'>
 							<ToggleSwitch
 								isOn={item.isActive}

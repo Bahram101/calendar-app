@@ -17,7 +17,9 @@ const Home: FC = () => {
 	const {
 		setCityId,
 		setPrayInfo,
-		cityId
+		cityId,
+		dateToday,
+		setDateToday
 	} = useGetContextData()
 	const { fetchPrayTimes, isLoading } = useFetchPrayTimes(cityId)
 
@@ -60,6 +62,19 @@ const Home: FC = () => {
 
 		fetchAndUpdatePrayTimes();
 	}, [cityId]);
+
+	useEffect(() => {
+    const checkForDateChange = () => {
+      const newDate = new Date().toISOString().split('T')[0];
+      if (newDate !== dateToday) {
+        setDateToday(newDate);
+        fetchAndProcessPrayTimes();
+      }
+    };
+
+    const intervalId = setInterval(checkForDateChange, 60 * 1000); 
+    return () => clearInterval(intervalId);
+  }, [dateToday]);
 
 	if (isLoading) {
 		return <Loader />
