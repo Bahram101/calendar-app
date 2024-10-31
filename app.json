@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "kuntizbe.kz",
-    "slug": "kuntizbe.kz",
+    "name": "calendar-app",
+    "slug": "calendar-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./app/assets/icon.png",
