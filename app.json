@@ -22,6 +22,18 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "13ade613-23e9-4d1e-b276-8f79fe3ff8d5"
+      }
+    },
+    "owner": "bahram101",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/13ade613-23e9-4d1e-b276-8f79fe3ff8d5"
     }
   }
 }
