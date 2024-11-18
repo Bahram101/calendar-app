@@ -31,7 +31,7 @@ const AdditionalPrayTimes: FC = () => {
 	};
 
 	const addPrayList = prayInfo?.prayTimes?.filter((item: TypePrayName) =>
-		extraPrayTimes.includes(item.key)) 
+		extraPrayTimes.includes(item.key))
 
 	return (
 		<View className='flex-1 justify-center absolute bottom-1/3 -z-10'>
